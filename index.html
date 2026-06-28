@@ -1,0 +1,4261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>命途推演 · Strategic Foresight</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"
+        onerror="this.onerror=null;var s=document.createElement('script');s.src='https://unpkg.com/marked@12.0.2/marked.min.js';s.onerror=function(){var t=document.createElement('script');t.src='https://fastly.jsdelivr.net/npm/marked@12.0.2/marked.min.js';document.head.appendChild(t);};document.head.appendChild(s);"></script>
+<style>
+/* ============================================================
+   命途推演 · Premium Utilitarian Minimalism
+   Warm monochrome · Editorial serif headlines · Hairline borders
+   ============================================================ */
+
+:root {
+  /* canvas */
+  --canvas: #FBFBFA;
+  --surface: #FFFFFF;
+  --surface-soft: #F7F6F3;
+  --surface-sunk: #F4F2EE;
+
+  /* borders */
+  --border: #EAEAEA;
+  --border-soft: rgba(0, 0, 0, 0.06);
+  --border-strong: #D5D5D2;
+
+  /* ink */
+  --ink: #111111;
+  --ink-2: #2F3437;
+  --ink-3: #555555;
+  --muted: #787774;
+  --muted-2: #9B9B98;
+  --muted-3: #C7C7C4;
+
+  /* pastels (used sparingly) */
+  --pale-red: #FDEBEC;
+  --pale-red-ink: #9F2F2D;
+  --pale-blue: #E1F3FE;
+  --pale-blue-ink: #1F6C9F;
+  --pale-green: #EDF3EC;
+  --pale-green-ink: #346538;
+  --pale-yellow: #FBF3DB;
+  --pale-yellow-ink: #956400;
+
+  /* type */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-serif: 'Newsreader', 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', Georgia, serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', ui-monospace, Menlo, Consolas, monospace;
+
+  /* shape */
+  --radius-xs: 3px;
+  --radius-sm: 6px;
+  --radius: 8px;
+  --radius-lg: 12px;
+
+  /* motion */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --t-fast: 0.18s var(--ease);
+  --t-mid: 0.35s var(--ease);
+  --t-slow: 0.6s var(--ease);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; }
+body {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  color: var(--ink);
+  background: var(--canvas);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  background-image:
+    radial-gradient(circle at 12% 10%, rgba(31, 108, 159, 0.025) 0%, transparent 40%),
+    radial-gradient(circle at 88% 90%, rgba(149, 100, 0, 0.025) 0%, transparent 40%);
+}
+
+/* hairline scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--muted-3); border-radius: 5px; border: 2px solid var(--canvas); }
+::-webkit-scrollbar-thumb:hover { background: var(--muted-2); }
+
+::selection { background: var(--ink); color: var(--surface); }
+
+button { font: inherit; cursor: pointer; background: none; border: none; color: inherit; }
+input, textarea, select { font: inherit; color: inherit; }
+a { color: inherit; text-decoration: none; }
+
+[i\\:ph], i.ph, i.ph-bold, i.ph-fill { font-style: normal; line-height: 1; display: inline-flex; }
+
+/* ============================================================ TOPBAR */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  height: 64px;
+  background: rgba(251, 251, 250, 0.82);
+  backdrop-filter: saturate(180%) blur(16px);
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.topbar-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  height: 100%;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+.brand-zh {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.brand-en {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.topnav {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.topnav-btn {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  transition: all var(--t-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.topnav-btn i { font-size: 14px; color: var(--ink-3); transition: color var(--t-fast); }
+.topnav-btn:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+  background: var(--surface);
+}
+.topnav-btn:hover i { color: var(--ink); }
+@media (max-width: 720px) {
+  .topbar-inner { padding: 0 20px; }
+  .topnav-btn span { display: none; }
+  .topnav-btn { padding: 8px; }
+  .brand-en { display: none; }
+}
+
+/* ============================================================ HERO */
+
+.hero {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 72px 32px 56px;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 80px;
+  align-items: end;
+  border-bottom: 1px solid var(--border);
+}
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--ink);
+}
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 28px;
+}
+.hero-title em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ink);
+  position: relative;
+}
+.hero-sub {
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--muted);
+  max-width: 540px;
+}
+.hero-sub strong { color: var(--ink-2); font-weight: 500; }
+
+.hero-meta {
+  border-left: 1px solid var(--border);
+  padding-left: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.hero-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.hero-stat-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.hero-stat-value {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.hero-stat-value em { font-style: italic; color: var(--muted); font-weight: 400; }
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; gap: 40px; padding: 48px 24px 36px; }
+  .hero-meta { border-left: none; padding-left: 0; border-top: 1px solid var(--border); padding-top: 28px; flex-direction: row; flex-wrap: wrap; gap: 28px; }
+}
+
+/* ============================================================ WORKSPACE LAYOUT */
+
+.workspace {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 48px 32px 80px;
+  display: grid;
+  grid-template-columns: minmax(440px, 1fr) 1.2fr;
+  gap: 56px;
+  align-items: start;
+}
+@media (max-width: 1024px) {
+  .workspace { grid-template-columns: 1fr; gap: 48px; padding: 32px 24px 64px; }
+}
+@media (max-width: 600px) {
+  .workspace { padding: 24px 20px 48px; }
+}
+
+.pane { display: flex; flex-direction: column; gap: 0; }
+.pane-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 18px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+.pane-title-group { display: flex; align-items: baseline; gap: 14px; }
+.pane-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.pane-title {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.pane-title em { font-style: italic; color: var(--muted); font-weight: 400; }
+.pane-sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ============================================================ FORM */
+
+.form-groups { display: flex; flex-direction: column; }
+
+.form-group {
+  border-bottom: 1px solid var(--border);
+  transition: background var(--t-fast);
+}
+.form-group:first-child { border-top: 1px solid var(--border); }
+
+.group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 4px;
+  cursor: pointer;
+  user-select: none;
+  transition: padding var(--t-fast);
+}
+.group-header:hover { background: var(--surface-soft); margin: 0 -8px; padding: 20px 12px; }
+.group-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  flex: 1;
+}
+.group-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  min-width: 26px;
+}
+.group-title {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 500;
+  font-style: italic;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+}
+.group-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  background: var(--pale-red);
+  color: var(--pale-red-ink);
+}
+.group-tag.alt { background: var(--pale-blue); color: var(--pale-blue-ink); }
+.group-tag.warn { background: var(--pale-yellow); color: var(--pale-yellow-ink); }
+
+.group-toggle {
+  color: var(--muted);
+  font-size: 14px;
+  transition: transform var(--t-fast);
+}
+.form-group.collapsed .group-toggle { transform: rotate(-90deg); }
+.form-group.collapsed .group-body { display: none; }
+
+.group-body {
+  padding: 6px 0 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.field { display: flex; flex-direction: column; gap: 8px; }
+.field-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.field-label .required { color: var(--pale-red-ink); }
+.field-hint {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.55;
+  font-style: italic;
+}
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+@media (max-width: 560px) { .field-row { grid-template-columns: 1fr; } }
+
+/* inputs */
+input[type="text"],
+input[type="number"],
+input[type="password"],
+textarea,
+select {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 14.5px;
+  padding: 10px 13px;
+  transition: border-color var(--t-fast), background var(--t-fast);
+  outline: none;
+}
+input::placeholder, textarea::placeholder {
+  color: var(--muted-2);
+}
+input:hover, textarea:hover, select:hover { border-color: var(--border-strong); }
+input:focus, textarea:focus, select:focus {
+  border-color: var(--ink);
+  background: var(--surface);
+}
+textarea { resize: vertical; min-height: 78px; line-height: 1.65; }
+textarea.large { min-height: 110px; }
+textarea.x-large { min-height: 160px; }
+
+select {
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--ink-3) 50%),
+    linear-gradient(135deg, var(--ink-3) 50%, transparent 50%);
+  background-position: calc(100% - 16px) calc(50% + 1px), calc(100% - 11px) calc(50% + 1px);
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 32px;
+  cursor: pointer;
+}
+
+/* chips & pills */
+.pill-group { display: flex; flex-wrap: wrap; gap: 6px; }
+.pill {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--ink-3);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  padding: 7px 13px;
+  transition: all var(--t-fast);
+  user-select: none;
+  cursor: pointer;
+}
+.pill:hover { border-color: var(--ink); color: var(--ink); }
+.pill.selected {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--surface);
+}
+
+/* segmented control */
+.segment-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--surface);
+}
+.segment {
+  background: var(--surface);
+  border: none;
+  border-right: 1px solid var(--border);
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 10px 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--t-fast);
+  user-select: none;
+  white-space: nowrap;
+}
+.segment:last-child { border-right: none; }
+.segment:hover { background: var(--surface-soft); color: var(--ink); }
+.segment.selected {
+  background: var(--ink);
+  color: var(--surface);
+}
+/* on small screens, wrap segments may end up with stray borders; mitigate */
+@media (max-width: 480px) {
+  .segment-group { grid-template-columns: repeat(3, 1fr); }
+  .segment { border-bottom: 1px solid var(--border); }
+  .segment:nth-last-child(-n+3) { border-bottom: none; }
+  .segment:nth-child(3n) { border-right: none; }
+}
+
+/* depth pills */
+.depth-group {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+.depth-pill {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--t-fast);
+  user-select: none;
+}
+.depth-pill:hover { border-color: var(--ink); }
+.depth-pill.selected {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--surface);
+}
+.depth-pill .depth-name {
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 3px;
+}
+.depth-pill .depth-meta {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+}
+.depth-pill.selected .depth-meta { color: var(--muted-3); }
+
+/* ============================================================ ACTION BAR */
+
+.action-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 32px;
+  margin-top: 8px;
+  border-top: 1px solid var(--border);
+}
+.btn-primary {
+  flex: 1;
+  background: var(--ink);
+  color: var(--surface);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius-sm);
+  padding: 14px 22px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: all var(--t-fast);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.btn-primary i { font-size: 15px; transition: transform var(--t-fast); }
+.btn-primary:hover { background: #1f1f1f; }
+.btn-primary:hover i { transform: translateX(3px); }
+.btn-primary:active { transform: scale(0.985); }
+.btn-primary:disabled { background: var(--muted-2); border-color: var(--muted-2); cursor: not-allowed; }
+.btn-primary:disabled:hover i { transform: none; }
+
+.btn-secondary {
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 22px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all var(--t-fast);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-secondary i { font-size: 14px; }
+.btn-secondary:hover { border-color: var(--ink); }
+.btn-secondary:active { transform: scale(0.985); }
+
+/* ============================================================ OUTPUT PANE */
+
+.output-empty {
+  padding: 60px 0;
+  text-align: left;
+  border-left: 1px dashed var(--border);
+  padding-left: 32px;
+  margin-top: 24px;
+}
+.output-empty-mark {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 28px;
+}
+.output-empty-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+.output-empty-title {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 500;
+  font-style: italic;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-bottom: 18px;
+  line-height: 1.2;
+}
+.output-empty-desc {
+  font-size: 14.5px;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 440px;
+}
+.output-empty-desc kbd {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  padding: 1px 6px;
+  color: var(--ink-2);
+}
+.output-empty-steps {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 440px;
+}
+.output-empty-step {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 14px;
+  font-size: 13.5px;
+  color: var(--ink-3);
+  line-height: 1.55;
+}
+.output-empty-step-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  padding-top: 3px;
+  letter-spacing: 0.1em;
+}
+
+/* progress block */
+.progress-block {
+  margin-bottom: 18px;
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  animation: fadeUp 0.55s var(--ease);
+  transition: padding var(--t-fast);
+}
+.progress-block-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+.progress-block-header .progress-stage { margin-bottom: 0; flex: 1; }
+.progress-block-toggle {
+  font-size: 13px;
+  color: var(--muted);
+  padding: 4px;
+  transition: transform var(--t-fast), color var(--t-fast);
+  flex-shrink: 0;
+}
+.progress-block-header:hover .progress-block-toggle { color: var(--ink); }
+.progress-block.collapsed .progress-block-toggle { transform: rotate(-90deg); }
+.progress-block-body {
+  margin-top: 12px;
+  max-height: 9999px;
+  overflow: hidden;
+  transition: max-height var(--t-mid), margin-top var(--t-mid), opacity var(--t-fast);
+}
+.progress-block.collapsed .progress-block-body {
+  max-height: 0;
+  margin-top: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.progress-block.collapsed { padding-bottom: 16px; }
+
+/* report summary card (drill-in entry) */
+.report-summary-card {
+  margin-top: 8px;
+  padding: 26px 26px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: 20px;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color var(--t-fast), box-shadow var(--t-fast), transform var(--t-fast);
+  animation: fadeUp 0.6s var(--ease);
+}
+.report-summary-card:hover {
+  border-color: var(--ink);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.report-summary-card:active { transform: scale(0.998); }
+.report-summary-icon {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: var(--pale-green);
+  color: var(--pale-green-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+.report-summary-meta { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.report-summary-title {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.report-summary-stats {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.report-summary-hint {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.report-summary-arrow {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+  transition: transform var(--t-fast);
+}
+.report-summary-card:hover .report-summary-arrow { transform: translateX(3px); }
+@media (max-width: 600px) {
+  .report-summary-card { grid-template-columns: 48px 1fr auto; padding: 20px; }
+  .report-summary-icon { width: 48px; height: 48px; font-size: 20px; }
+}
+
+/* report overlay (drill-in modal) */
+.report-overlay-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(17, 17, 17, 0.55);
+  backdrop-filter: blur(6px);
+  z-index: 110;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-mid);
+}
+.report-overlay-backdrop.open { opacity: 1; pointer-events: auto; }
+
+.report-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 111;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 48px 24px;
+  pointer-events: none;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.report-overlay.open { pointer-events: auto; }
+.report-overlay-inner {
+  background: var(--surface);
+  max-width: 920px;
+  width: 100%;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  margin-bottom: 48px;
+  transform: translateY(24px);
+  opacity: 0;
+  transition: transform var(--t-mid), opacity var(--t-mid);
+  display: flex;
+  flex-direction: column;
+}
+.report-overlay.open .report-overlay-inner {
+  transform: translateY(0);
+  opacity: 1;
+}
+.report-overlay-header {
+  position: sticky;
+  top: 0;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  z-index: 1;
+}
+.report-overlay-title {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--ink);
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.005em;
+}
+.report-overlay-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.report-overlay-content {
+  padding: 40px 56px 64px;
+  max-width: none;
+}
+@media (max-width: 640px) {
+  .report-overlay { padding: 12px 8px; }
+  .report-overlay-header { padding: 14px 16px; }
+  .report-overlay-content { padding: 24px 18px 48px; }
+  .report-overlay-title { font-size: 15px; }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.progress-stage {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+.progress-stage .stage-icon {
+  font-size: 16px;
+  color: var(--ink-3);
+}
+.progress-stage:not(.done) .stage-icon.ph-circle-notch,
+.progress-stage:not(.done) .stage-icon.ph-spinner-gap {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.progress-stage.done .stage-icon { color: var(--pale-green-ink); }
+.progress-stage.error .stage-icon { color: var(--pale-red-ink); }
+.progress-stage strong { font-weight: 600; color: var(--ink); }
+.progress-detail {
+  font-size: 12px;
+  color: var(--muted);
+  padding-left: 28px;
+  line-height: 1.6;
+  font-family: var(--font-mono);
+}
+
+.sections-preview {
+  margin-top: 16px;
+  padding-left: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+  margin-left: -22px;
+  margin-right: -22px;
+  padding-left: 50px;
+  padding-right: 22px;
+}
+.section-card {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  animation: fadeUp 0.55s var(--ease) backwards;
+}
+.section-card:last-child { border-bottom: none; }
+.section-card-title {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  letter-spacing: -0.005em;
+}
+.section-card-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  min-width: 24px;
+}
+.section-card-purpose {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.55;
+  padding-left: 36px;
+}
+.section-card-meta {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--muted-2);
+  margin-top: 6px;
+  padding-left: 36px;
+  letter-spacing: 0.05em;
+}
+.section-card-meta strong { color: var(--ink-3); font-weight: 500; }
+.queries-card { background: var(--surface-soft); border-radius: var(--radius-sm); padding: 12px 14px; margin-top: 12px; }
+.queries-card .section-card-title { font-style: normal; font-size: 14px; color: var(--ink-2); }
+.queries-card .section-card-num { color: var(--pale-blue-ink); font-family: var(--font-sans); font-weight: 700; }
+
+/* evidence preview (Tavily results) */
+.evidence-preview { margin-bottom: 32px; }
+.evidence-list {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  overflow: hidden;
+}
+.evidence-list-head {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 12px 16px;
+  background: var(--surface-soft);
+  border-bottom: 1px solid var(--border);
+}
+.evidence-item {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 14px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  transition: background var(--t-fast);
+  color: inherit;
+  text-decoration: none;
+}
+.evidence-item:last-child { border-bottom: none; }
+.evidence-item:hover { background: var(--surface-soft); }
+.evidence-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  padding-top: 3px;
+  letter-spacing: 0.1em;
+}
+.evidence-title {
+  font-family: var(--font-serif);
+  font-size: 15.5px;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+  line-height: 1.35;
+  margin-bottom: 4px;
+}
+.evidence-snippet {
+  font-size: 12.5px;
+  color: var(--ink-3);
+  line-height: 1.55;
+  margin-bottom: 6px;
+}
+.evidence-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+.evidence-group-head {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--ink-3);
+  padding: 12px 16px 6px;
+  background: var(--surface-soft);
+  border-bottom: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.evidence-group-head:first-of-type { border-top: none; }
+.evidence-group-count {
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.15em;
+}
+
+/* report */
+.report {
+  font-size: 15.5px;
+  line-height: 1.78;
+  color: var(--ink);
+  max-width: 760px;
+}
+.report h2 {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  margin: 56px 0 22px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.2;
+}
+.report h2:first-child { margin-top: 0; }
+.report h3 {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--ink);
+  margin: 30px 0 10px;
+  letter-spacing: -0.005em;
+}
+.report h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-2);
+  margin: 22px 0 8px;
+  letter-spacing: -0.005em;
+}
+.report p { margin-bottom: 14px; color: var(--ink); }
+.report strong {
+  color: var(--ink);
+  font-weight: 600;
+  background: linear-gradient(transparent 65%, var(--pale-yellow) 65%);
+  padding: 0 2px;
+}
+.report em {
+  font-style: italic;
+  color: var(--ink-2);
+}
+.report ul, .report ol { margin: 8px 0 16px 22px; }
+.report li { margin-bottom: 6px; }
+.report blockquote {
+  border-left: 2px solid var(--ink);
+  padding: 4px 18px;
+  margin: 18px 0;
+  color: var(--ink-2);
+  font-style: italic;
+  font-family: var(--font-serif);
+  font-size: 16.5px;
+}
+.report code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  background: var(--surface-soft);
+  color: var(--ink);
+  padding: 1px 6px;
+  border-radius: var(--radius-xs);
+}
+.report pre {
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  overflow-x: auto;
+  margin: 18px 0;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--ink-2);
+}
+.report pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  font-size: inherit;
+}
+.report table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 22px 0;
+  font-size: 13.5px;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+.report table th {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-soft);
+}
+.report table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink);
+  vertical-align: top;
+}
+.report table tr:last-child td { border-bottom: none; }
+.report table tr:hover td { background: var(--surface-soft); }
+.report hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 36px 0;
+}
+
+.streaming-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 1.05em;
+  background: var(--ink);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* output toolbar */
+.output-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-bottom: 24px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--border);
+}
+.tool-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--ink-3);
+  padding: 7px 12px;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: all var(--t-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.tool-btn i { font-size: 13px; color: var(--muted); transition: color var(--t-fast); }
+.tool-btn:hover { border-color: var(--ink); color: var(--ink); }
+.tool-btn:hover i { color: var(--ink); }
+.tool-btn.primary {
+  background: var(--ink);
+  color: var(--surface);
+  border-color: var(--ink);
+}
+.tool-btn.primary i { color: var(--surface); }
+.tool-btn.primary:hover { background: #1f1f1f; }
+.tool-btn.danger:hover { border-color: var(--pale-red-ink); color: var(--pale-red-ink); }
+.tool-btn.danger:hover i { color: var(--pale-red-ink); }
+.tool-spacer { flex: 1; }
+.tool-stats {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+/* ============================================================ DRAWERS */
+
+.drawer-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(17, 17, 17, 0.18);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-mid);
+}
+.drawer-backdrop.open { opacity: 1; pointer-events: auto; }
+
+.drawer {
+  position: fixed;
+  z-index: 101;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  box-shadow: -1px 0 0 var(--border);
+}
+.drawer-settings,
+.drawer-history {
+  top: 0;
+  right: 0;
+  width: min(460px, 95vw);
+  height: 100vh;
+  transform: translateX(100%);
+  transition: transform var(--t-mid);
+}
+.drawer-settings.open,
+.drawer-history.open { transform: translateX(0); }
+
+.drawer-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 24px 28px 18px;
+  border-bottom: 1px solid var(--border);
+}
+.drawer-title {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 500;
+  font-style: italic;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.drawer-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.drawer-close {
+  font-size: 18px;
+  color: var(--muted);
+  padding: 4px;
+  border-radius: var(--radius-xs);
+  transition: all var(--t-fast);
+}
+.drawer-close:hover { color: var(--ink); background: var(--surface-soft); }
+.drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.drawer-footer {
+  padding: 20px 28px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+  background: var(--surface-soft);
+}
+.drawer-footer .btn-primary,
+.drawer-footer .btn-secondary { padding: 11px 18px; font-size: 13px; }
+
+.notice {
+  display: flex;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--pale-blue);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--pale-blue-ink);
+}
+.notice i { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+.notice strong { font-weight: 600; color: var(--pale-blue-ink); }
+
+.test-result {
+  margin-top: 4px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  display: none;
+  line-height: 1.5;
+}
+.test-result.ok { display: block; background: var(--pale-green); color: var(--pale-green-ink); }
+.test-result.err { display: block; background: var(--pale-red); color: var(--pale-red-ink); }
+.test-result.pending { display: block; background: var(--surface-soft); color: var(--muted); }
+
+/* toggle switch */
+.toggle-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  cursor: pointer;
+  transition: border-color var(--t-fast);
+}
+.toggle-row:hover { border-color: var(--ink); }
+.toggle-row input[type="checkbox"] {
+  appearance: none;
+  width: 36px; height: 20px;
+  margin-top: 1px;
+  border-radius: 999px;
+  background: var(--muted-3);
+  position: relative;
+  cursor: pointer;
+  transition: background var(--t-fast);
+  flex-shrink: 0;
+}
+.toggle-row input[type="checkbox"]::after {
+  content: '';
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 16px; height: 16px;
+  background: var(--surface);
+  border-radius: 50%;
+  transition: transform var(--t-fast);
+}
+.toggle-row input[type="checkbox"]:checked { background: var(--ink); }
+.toggle-row input[type="checkbox"]:checked::after { transform: translateX(16px); }
+.toggle-row-text {
+  flex: 1;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink);
+}
+.toggle-row-text strong { font-weight: 600; }
+.toggle-row-text .hint { display: block; font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+.setting-section-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 8px -28px;
+}
+.setting-section-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: -8px;
+  margin-top: 4px;
+}
+
+/* history items */
+.history-item {
+  border-bottom: 1px solid var(--border);
+  padding: 16px 4px;
+  cursor: pointer;
+  transition: all var(--t-fast);
+  position: relative;
+  margin: 0 -4px;
+}
+.history-item:first-child { border-top: 1px solid var(--border); }
+.history-item:hover { background: var(--surface-soft); padding: 16px 12px; margin: 0 -12px; }
+.history-item-title {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 6px;
+  padding-right: 32px;
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+}
+.history-item-meta {
+  display: flex;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.history-item-delete {
+  position: absolute;
+  top: 14px;
+  right: 4px;
+  color: var(--muted-2);
+  padding: 4px 6px;
+  border-radius: var(--radius-xs);
+  font-size: 14px;
+  transition: all var(--t-fast);
+  background: transparent;
+  border: none;
+}
+.history-item-delete:hover { color: var(--pale-red-ink); background: var(--pale-red); }
+.history-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--muted);
+}
+.history-empty .history-empty-title {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-style: italic;
+  color: var(--ink-3);
+  margin-bottom: 8px;
+}
+.history-empty .history-empty-sub {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ============================================================ TOAST */
+
+.toast-container {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+.toast {
+  background: var(--ink);
+  color: var(--surface);
+  border-radius: var(--radius-sm);
+  padding: 11px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  min-width: 220px;
+  text-align: center;
+  animation: toastIn 0.35s var(--ease);
+  pointer-events: auto;
+  letter-spacing: 0.01em;
+}
+.toast.ok { background: var(--pale-green-ink); }
+.toast.err { background: var(--pale-red-ink); }
+.toast.warn { background: var(--pale-yellow-ink); }
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================ FOOTER */
+
+.site-footer {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 40px 32px 56px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.footer-left { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; line-height: 1.8; }
+.footer-left strong { color: var(--ink-3); font-weight: 500; }
+.footer-right {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-style: italic;
+  color: var(--muted);
+  letter-spacing: -0.005em;
+}
+@media (max-width: 600px) { .site-footer { padding: 32px 20px 40px; } }
+
+/* ============================================================ MOTION */
+
+.fade-in { opacity: 0; transform: translateY(12px); transition: opacity var(--t-slow), transform var(--t-slow); }
+.fade-in.in { opacity: 1; transform: translateY(0); }
+
+</style>
+</head>
+<body>
+
+<!-- ================================================ TOPBAR -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-zh">命途推演</div>
+      <div class="brand-en">Strategic Foresight · v1</div>
+    </div>
+    <nav class="topnav">
+      <button class="topnav-btn" id="btn-history" type="button">
+        <i class="ph-bold ph-clock-counter-clockwise"></i>
+        <span>History</span>
+      </button>
+      <button class="topnav-btn" id="btn-settings" type="button">
+        <i class="ph-bold ph-gear-six"></i>
+        <span>Settings</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<!-- ================================================ HERO -->
+<section class="hero fade-in" data-fade>
+  <div>
+    <div class="hero-eyebrow">PERSONAL DECISION SANDBOX</div>
+    <h1 class="hero-title">把一次模糊的决策，<br>推演成一份基于数字的<em>冷峻沙盘</em>。</h1>
+    <p class="hero-sub">
+      填写左侧决策表单。两阶段 AI 流水线——<strong>架构师</strong>先为你定制章节结构，<strong>推演师</strong>按结构生成报告——产出一份 6,000-15,000 字的战略推演卷宗，涵盖 10 年财务对照、社交人脉演化、5 种极端风险与脱困预案、3 条平行宇宙路径。
+    </p>
+  </div>
+  <div class="hero-meta">
+    <div class="hero-stat">
+      <span class="hero-stat-label">PIPELINE</span>
+      <span class="hero-stat-value">2 stages <em>· architect → strategist</em></span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-label">REPORT DEPTH</span>
+      <span class="hero-stat-value">3,500 — 11,000 <em>characters</em></span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-label">EXPORT</span>
+      <span class="hero-stat-value">独立卷宗 HTML <em>· portable</em></span>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================ WORKSPACE -->
+<main class="workspace">
+
+  <!-- LEFT: FORM -->
+  <section class="pane" id="form-pane">
+    <header class="pane-header">
+      <div class="pane-title-group">
+        <span class="pane-num">A</span>
+        <h2 class="pane-title">Decision <em>Input</em></h2>
+      </div>
+      <div class="pane-sub">7 groups · group 1 required</div>
+    </header>
+
+    <div class="form-groups" id="form-body">
+
+      <!-- ① 决策本身 -->
+      <div class="form-group" data-group="decision">
+        <div class="group-header" data-toggle>
+          <div class="group-title-row">
+            <span class="group-num">01</span>
+            <span class="group-title">决策本身</span>
+            <span class="group-tag">REQUIRED</span>
+          </div>
+          <i class="ph-bold ph-caret-down group-toggle"></i>
+        </div>
+        <div class="group-body">
+          <div class="field">
+            <label class="field-label">决策一句话标题 <span class="required">·必填</span></label>
+            <input type="text" id="f-title" placeholder="例：兰大大二，从地质工程转人工智能">
+          </div>
+          <div class="field">
+            <label class="field-label">选项 A 详述 <span class="required">·必填</span></label>
+            <textarea id="f-option-a" class="large" placeholder="详细描述这个选项：你将做什么、目标是什么、为什么吸引你..."></textarea>
+          </div>
+          <div class="field">
+            <label class="field-label">选项 B 详述（可选）</label>
+            <textarea id="f-option-b" class="large" placeholder="如果有对照选项，详细描述。也可只填 A，让 AI 推演这个选项的代价与替代。"></textarea>
+          </div>
+          <div class="field">
+            <label class="field-label">决策类型（可多选）</label>
+            <div class="pill-group" data-multi data-field="types">
+              <button class="pill" type="button" data-val="学业">学业</button>
+              <button class="pill" type="button" data-val="职业">职业</button>
+              <button class="pill" type="button" data-val="婚恋">婚恋</button>
+              <button class="pill" type="button" data-val="迁徙">迁徙</button>
+              <button class="pill" type="button" data-val="创业">创业</button>
+              <button class="pill" type="button" data-val="投资">投资</button>
+              <button class="pill" type="button" data-val="健康">健康</button>
+              <button class="pill" type="button" data-val="家庭">家庭</button>
+              <button class="pill" type="button" data-val="教育子女">教育子女</button>
+              <button class="pill" type="button" data-val="其他">其他</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">决策时间窗口</label>
+            <input type="text" id="f-deadline" placeholder="例：2026 年 6 月底前 / 半年内 / 没有硬截止">
+          </div>
+        </div>
+      </div>
+
+      <!-- ② 个人基本盘 -->
+      <div class="form-group" data-group="profile">
+        <div class="group-header" data-toggle>
+          <div class="group-title-row">
+            <span class="group-num">02</span>
+            <span class="group-title">个人基本盘</span>
+          </div>
+          <i class="ph-bold ph-caret-down group-toggle"></i>
+        </div>
+        <div class="group-body">
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">年龄</label>
+              <input type="number" id="f-age" min="14" max="100" placeholder="如 22">
+            </div>
+            <div class="field">
+              <label class="field-label">性别</label>
+              <div class="pill-group" data-field="gender">
+                <button class="pill" type="button" data-val="男">男</button>
+                <button class="pill" type="button" data-val="女">女</button>
+                <button class="pill" type="button" data-val="其他">其他</button>
+                <button class="pill" type="button" data-val="不愿透露">不愿透露</button>
+              </div>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">当前所在城市</label>
+              <input type="text" id="f-city-now" placeholder="如 杭州 / 兰州 / 北京">
+            </div>
+            <div class="field">
+              <label class="field-label">老家城市</label>
+              <input type="text" id="f-city-home" placeholder="如 西安 / 县城名">
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">学历层级</label>
+            <div class="pill-group" data-field="education">
+              <button class="pill" type="button" data-val="高中及以下">高中及以下</button>
+              <button class="pill" type="button" data-val="本科在读">本科在读</button>
+              <button class="pill" type="button" data-val="本科">本科</button>
+              <button class="pill" type="button" data-val="硕士在读">硕士在读</button>
+              <button class="pill" type="button" data-val="硕士">硕士</button>
+              <button class="pill" type="button" data-val="博士在读">博士在读</button>
+              <button class="pill" type="button" data-val="博士">博士</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">当前职业（行业 + 岗位 + 工龄）</label>
+            <input type="text" id="f-job" placeholder="如 互联网 / 后端工程师 / 3 年；学生可填「在校生」">
+          </div>
+        </div>
+      </div>
+
+      <!-- ③ 经济基本盘 -->
+      <div class="form-group" data-group="finance">
+        <div class="group-header" data-toggle>
+          <div class="group-title-row">
+            <span class="group-num">03</span>
+            <span class="group-title">经济基本盘</span>
+          </div>
+          <i class="ph-bold ph-caret-down group-toggle"></i>
+        </div>
+        <div class="group-body">
+          <div class="field">
+            <label class="field-label">流动资产（存款 + 可变现投资）</label>
+            <div class="segment-group" data-field="assets">
+              <button class="segment" type="button" data-val="<5万">&lt; 5万</button>
+              <button class="segment" type="button" data-val="5-20万">5-20万</button>
+              <button class="segment" type="button" data-val="20-50万">20-50万</button>
+              <button class="segment" type="button" data-val="50-100万">50-100万</button>
+              <button class="segment" type="button" data-val="100-300万">100-300万</button>
+              <button class="segment" type="button" data-val="300-1000万">300-1000万</button>
+              <button class="segment" type="button" data-val=">1000万">&gt; 1000万</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">负债水平</label>
+            <div class="segment-group" data-field="debt">
+              <button class="segment" type="button" data-val="无负债">无负债</button>
+              <button class="segment" type="button" data-val="<月收12倍">&lt; 月收12倍</button>
+              <button class="segment" type="button" data-val="12-36倍">12-36倍</button>
+              <button class="segment" type="button" data-val=">36倍">&gt; 36倍</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">月收入（税后）</label>
+            <div class="segment-group" data-field="income">
+              <button class="segment" type="button" data-val="<5k">&lt; 5k</button>
+              <button class="segment" type="button" data-val="5-10k">5-10k</button>
+              <button class="segment" type="button" data-val="10-20k">10-20k</button>
+              <button class="segment" type="button" data-val="20-40k">20-40k</button>
+              <button class="segment" type="button" data-val="40-80k">40-80k</button>
+              <button class="segment" type="button" data-val=">80k">&gt; 80k</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">家庭可调动支援额度</label>
+            <div class="segment-group" data-field="family_support">
+              <button class="segment" type="button" data-val="<5万">&lt; 5万</button>
+              <button class="segment" type="button" data-val="5-20万">5-20万</button>
+              <button class="segment" type="button" data-val="20-50万">20-50万</button>
+              <button class="segment" type="button" data-val="50-200万">50-200万</button>
+              <button class="segment" type="button" data-val=">200万">&gt; 200万</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ④ 家庭与情感 -->
+      <div class="form-group collapsed" data-group="family">
+        <div class="group-header" data-toggle>
+          <div class="group-title-row">
+            <span class="group-num">04</span>
+            <span class="group-title">家庭与情感</span>
+            <span class="group-tag alt">OPTIONAL</span>
+          </div>
+          <i class="ph-bold ph-caret-down group-toggle"></i>
+        </div>
+        <div class="group-body">
+          <div class="field">
+            <label class="field-label">父母健康状况</label>
+            <div class="pill-group" data-field="parents_health">
+              <button class="pill" type="button" data-val="良好">良好</button>
+              <button class="pill" type="button" data-val="一般">一般</button>
+              <button class="pill" type="button" data-val="不良">不良</button>
+              <button class="pill" type="button" data-val="较差">较差</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">父母经济水平</label>
+            <div class="pill-group" data-field="parents_econ">
+              <button class="pill" type="button" data-val="困难">困难</button>
+              <button class="pill" type="button" data-val="普通">普通</button>
+              <button class="pill" type="button" data-val="中产">中产</button>
+              <button class="pill" type="button" data-val="富裕">富裕</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">父母居住地</label>
+            <div class="pill-group" data-field="parents_loc">
+              <button class="pill" type="button" data-val="与你同城">与你同城</button>
+              <button class="pill" type="button" data-val="异城同省">异城同省</button>
+              <button class="pill" type="button" data-val="异省">异省</button>
+              <button class="pill" type="button" data-val="异国">异国</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">是否独生子女</label>
+            <div class="pill-group" data-field="only_child">
+              <button class="pill" type="button" data-val="是">是</button>
+              <button class="pill" type="button" data-val="否">否</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">婚恋状态</label>
+            <div class="pill-group" data-field="marital">
+              <button class="pill" type="button" data-val="单身">单身</button>
+              <button class="pill" type="button" data-val="恋爱中">恋爱中</button>
+              <button class="pill" type="button" data-val="已婚未育">已婚未育</button>
+              <button class="pill" type="button" data-val="已婚已育">已婚已育</button>
+              <button class="pill" type="button" data-val="离异">离异</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">家人对本决策的态度</label>
+            <div class="pill-group" data-field="family_attitude">
+              <button class="pill" type="button" data-val="强烈支持">强烈支持</button>
+              <button class="pill" type="button" data-val="支持">支持</button>
+              <button class="pill" type="button" data-val="中立">中立</button>
+              <button class="pill" type="button" data-val="反对">反对</button>
+              <button class="pill" type="button" data-val="强烈反对">强烈反对</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ⑤ 禀赋与软因素 -->
+      <div class="form-group collapsed" data-group="endowment">
+        <div class="group-header" data-toggle>
+          <div class="group-title-row">
+            <span class="group-num">05</span>
+            <span class="group-title">禀赋与软因素</span>
+            <span class="group-tag alt">OPTIONAL</span>
+          </div>
+          <i class="ph-bold ph-caret-down group-toggle"></i>
+        </div>
+        <div class="group-body">
+          <div class="field">
+            <label class="field-label">技能 / 特长</label>
+            <textarea id="f-skills" placeholder="如 Python / 英语 C1 / 公开演讲 / 钢琴十级 ..."></textarea>
+          </div>
+          <div class="field">
+            <label class="field-label">关键人脉 / 资源</label>
+            <textarea id="f-network" placeholder="如 父亲在某央企任职 / 表哥在硅谷做 AI / 校友资源 ..."></textarea>
+          </div>
+          <div class="field">
+            <label class="field-label">风险偏好</label>
+            <div class="pill-group" data-field="risk">
+              <button class="pill" type="button" data-val="保守">保守（求稳）</button>
+              <button class="pill" type="button" data-val="平衡">平衡</button>
+              <button class="pill" type="button" data-val="进取">进取</button>
+              <button class="pill" type="button" data-val="激进">激进（求博）</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">健康状况</label>
+            <div class="pill-group" data-field="health">
+              <button class="pill" type="button" data-val="极好">极好</button>
+              <button class="pill" type="button" data-val="良好">良好</button>
+              <button class="pill" type="button" data-val="一般">一般</button>
+              <button class="pill" type="button" data-val="慢性病">慢性病</button>
+              <button class="pill" type="button" data-val="重大疾病史">重大疾病史</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">MBTI（可选）</label>
+            <select id="f-mbti">
+              <option value="">— 不确定 / 不填 —</option>
+              <option>INTJ</option><option>INTP</option><option>ENTJ</option><option>ENTP</option>
+              <option>INFJ</option><option>INFP</option><option>ENFJ</option><option>ENFP</option>
+              <option>ISTJ</option><option>ISFJ</option><option>ESTJ</option><option>ESFJ</option>
+              <option>ISTP</option><option>ISFP</option><option>ESTP</option><option>ESFP</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- ⑥ 约束与目标 -->
+      <div class="form-group collapsed" data-group="constraints">
+        <div class="group-header" data-toggle>
+          <div class="group-title-row">
+            <span class="group-num">06</span>
+            <span class="group-title">约束与目标</span>
+            <span class="group-tag alt">OPTIONAL</span>
+          </div>
+          <i class="ph-bold ph-caret-down group-toggle"></i>
+        </div>
+        <div class="group-body">
+          <div class="field">
+            <label class="field-label">不可妥协的硬约束</label>
+            <textarea id="f-constraints" placeholder="如：父母必须留在同城 / 5 年内必须结婚 / 不能离开北京 ..."></textarea>
+            <div class="field-hint">所有推演路径必须满足这里列出的条件，否则路径会被淘汰。</div>
+          </div>
+          <div class="field">
+            <label class="field-label">推演侧重（可多选）</label>
+            <div class="pill-group" data-multi data-field="priorities">
+              <button class="pill" type="button" data-val="财富最大化">财富最大化</button>
+              <button class="pill" type="button" data-val="风险最小化">风险最小化</button>
+              <button class="pill" type="button" data-val="幸福最大化">幸福最大化</button>
+              <button class="pill" type="button" data-val="家庭和谐">家庭和谐</button>
+              <button class="pill" type="button" data-val="自我实现">自我实现</button>
+              <button class="pill" type="button" data-val="健康优先">健康优先</button>
+            </div>
+            <div class="field-hint">影响结尾建议倾向，但不会遮蔽客观代价。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ⑦ 补充信息 -->
+      <div class="form-group" data-group="supplement">
+        <div class="group-header" data-toggle>
+          <div class="group-title-row">
+            <span class="group-num">07</span>
+            <span class="group-title">补充信息</span>
+            <span class="group-tag warn">HIGH PRIORITY</span>
+          </div>
+          <i class="ph-bold ph-caret-down group-toggle"></i>
+        </div>
+        <div class="group-body">
+          <div class="field">
+            <textarea id="f-supplement" class="x-large" maxlength="2000" placeholder="以上字段未涵盖、但对你这次决策可能至关重要的任何信息——家庭隐秘动力、行业内部消息、个人创伤、宗教信仰、地域文化、独特机会、健康隐患、过往关键经历……越具体越好。AI 会把这段当作最高优先级线索处理。"></textarea>
+            <div class="field-hint">最多 2000 字。这一栏的内容如果与上面结构化字段冲突，AI 会以这里为准。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTION BAR -->
+      <div class="action-bar">
+        <button class="btn-primary" id="btn-run" type="button">
+          <span>开始推演</span>
+          <i class="ph-bold ph-arrow-right"></i>
+        </button>
+        <button class="btn-secondary" id="btn-stop" type="button" style="display:none;">
+          <i class="ph-bold ph-stop"></i>
+          <span>停止</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- RIGHT: OUTPUT -->
+  <section class="pane" id="output-pane">
+    <header class="pane-header">
+      <div class="pane-title-group">
+        <span class="pane-num">B</span>
+        <h2 class="pane-title">Simulation <em>Output</em></h2>
+      </div>
+      <div class="pane-sub" id="depth-indicator">depth · 标准</div>
+    </header>
+
+    <div id="output-toolbar" class="output-toolbar" style="display:none;">
+      <button class="tool-btn primary" id="btn-view-report" type="button">
+        <i class="ph-bold ph-book-open-text"></i>
+        <span>查看完整报告</span>
+      </button>
+      <button class="tool-btn" id="btn-export-html" type="button">
+        <i class="ph-bold ph-download-simple"></i>
+        <span>导出 HTML</span>
+      </button>
+      <button class="tool-btn" id="btn-copy-md" type="button">
+        <i class="ph-bold ph-copy"></i>
+        <span>Markdown</span>
+      </button>
+      <button class="tool-btn" id="btn-save-history" type="button">
+        <i class="ph-bold ph-floppy-disk"></i>
+        <span>存入历史</span>
+      </button>
+      <div class="tool-spacer"></div>
+      <span class="tool-stats" id="output-stats"></span>
+      <button class="tool-btn danger" id="btn-clear" type="button">
+        <i class="ph-bold ph-trash"></i>
+      </button>
+    </div>
+
+    <div id="output-body">
+      <div class="output-empty" id="output-empty">
+        <svg class="output-empty-mark" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="32" r="22" stroke="#111111" stroke-width="1.2"/>
+          <path d="M32 6 L32 58" stroke="#111111" stroke-width="1.2"/>
+          <path d="M6 32 L58 32" stroke="#111111" stroke-width="1.2"/>
+          <path d="M32 22 L36 32 L32 42 L28 32 Z" fill="#E1F3FE" stroke="#1F6C9F" stroke-width="1"/>
+          <circle cx="32" cy="32" r="2.5" fill="#111111"/>
+        </svg>
+        <div class="output-empty-eyebrow">AWAITING DECISION INPUT</div>
+        <h3 class="output-empty-title">操作台就绪，等待第一份卷宗。</h3>
+        <p class="output-empty-desc">
+          填写左侧表单（仅第 01 组必填），按 <kbd>开始推演</kbd> 或 <kbd>⌘ + Enter</kbd> 启动两阶段流水线。报告将在此处流式生成。
+        </p>
+        <div class="output-empty-steps">
+          <div class="output-empty-step">
+            <div class="output-empty-step-num">01</div>
+            <div>在右上角 <em>Settings</em> 中填入你的 LLM API Key（仅本地存储，永不上传）</div>
+          </div>
+          <div class="output-empty-step">
+            <div class="output-empty-step-num">02</div>
+            <div>填写决策标题、选项详述与决策类型；其他字段越具体，推演越锋利</div>
+          </div>
+          <div class="output-empty-step">
+            <div class="output-empty-step-num">03</div>
+            <div>架构师 AI 先定制章节结构，推演师 AI 再按结构生成完整卷宗</div>
+          </div>
+          <div class="output-empty-step">
+            <div class="output-empty-step-num">04</div>
+            <div>导出独立 HTML 卷宗或复制 Markdown，自动加入历史</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="output-content" style="display:none;">
+        <div id="progress-area"></div>
+        <article class="report" id="report-area"></article>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================================================ FOOTER -->
+<footer class="site-footer">
+  <div class="footer-left">
+    <div><strong>命途推演 · Strategic Foresight</strong></div>
+    <div>纯前端 · 自带 API Key · 数据本地</div>
+  </div>
+  <div class="footer-right">天机有数，决策在人。</div>
+</footer>
+
+<!-- ================================================ SETTINGS DRAWER -->
+<div class="drawer-backdrop" id="settings-backdrop"></div>
+<aside class="drawer drawer-settings" id="settings-drawer">
+  <header class="drawer-header">
+    <div>
+      <div class="drawer-eyebrow">CONFIGURATION</div>
+      <h3 class="drawer-title">API · 设置</h3>
+    </div>
+    <button class="drawer-close" data-close-drawer type="button" aria-label="关闭">
+      <i class="ph-bold ph-x"></i>
+    </button>
+  </header>
+  <div class="drawer-body">
+    <div class="notice">
+      <i class="ph-fill ph-shield-check"></i>
+      <div>
+        <strong>本地存储 · 永不上传。</strong>API Key 只保存在你的浏览器 localStorage 中，本工具不向任何第三方服务器发送你的密钥。在公共电脑使用后请用下方「清空 Key」按钮善后。
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">API Base URL</label>
+      <input type="text" id="cfg-base" placeholder="https://api.deepseek.com/v1">
+      <div class="field-hint">兼容 OpenAI Chat Completions 协议的端点。</div>
+    </div>
+    <div class="field">
+      <label class="field-label">API Key</label>
+      <input type="password" id="cfg-key" placeholder="sk-...">
+    </div>
+    <div class="field">
+      <label class="field-label">Model 名称</label>
+      <input type="text" id="cfg-model" placeholder="deepseek-chat">
+      <div class="field-hint">如 deepseek-chat · glm-4-plus · qwen-max · claude-3-5-sonnet-20241022 · gpt-4o</div>
+    </div>
+    <div class="field">
+      <label class="field-label">推演深度</label>
+      <div class="depth-group" data-field="depth">
+        <button class="depth-pill" type="button" data-val="快速">
+          <span class="depth-name">快速</span>
+          <span class="depth-meta">3-4k 字</span>
+        </button>
+        <button class="depth-pill" type="button" data-val="标准">
+          <span class="depth-name">标准</span>
+          <span class="depth-meta">6-8k 字</span>
+        </button>
+        <button class="depth-pill" type="button" data-val="极致">
+          <span class="depth-name">极致</span>
+          <span class="depth-meta">10-12k 字</span>
+        </button>
+      </div>
+    </div>
+    <div class="field">
+      <button class="btn-secondary" id="btn-test" type="button" style="width:100%;">
+        <i class="ph-bold ph-plugs-connected"></i>
+        <span>测试连接</span>
+      </button>
+      <div class="test-result" id="test-result"></div>
+    </div>
+
+    <div class="setting-section-divider"></div>
+    <div class="setting-section-label">联网检索（可选）</div>
+
+    <div class="field">
+      <label class="toggle-row" for="cfg-search-enabled">
+        <input type="checkbox" id="cfg-search-enabled">
+        <span class="toggle-row-text">
+          <strong>推演前自动检索网络数据</strong>
+          <span class="hint">用 Tavily 拉取 5-8 条实时证据，注入到架构师与推演师的上下文。每次推演约消耗 2-3 次检索额度。</span>
+        </span>
+      </label>
+    </div>
+    <div class="field">
+      <label class="field-label">Tavily API Key</label>
+      <input type="password" id="cfg-tavily-key" placeholder="tvly-...">
+      <div class="field-hint">需在 <em>tavily.com</em> 申请；免费额度每月 1000 次检索，个人测试足够。仅本地存储。</div>
+    </div>
+  </div>
+  <footer class="drawer-footer">
+    <button class="btn-secondary" id="btn-clear-key" type="button" style="flex:1;">
+      <i class="ph-bold ph-key"></i>
+      <span>清空 Key</span>
+    </button>
+    <button class="btn-primary" id="btn-save-cfg" type="button" style="flex:2;">
+      <span>保存配置</span>
+      <i class="ph-bold ph-check"></i>
+    </button>
+  </footer>
+</aside>
+
+<!-- ================================================ HISTORY DRAWER -->
+<div class="drawer-backdrop" id="history-backdrop"></div>
+<aside class="drawer drawer-history" id="history-drawer">
+  <header class="drawer-header">
+    <div>
+      <div class="drawer-eyebrow">ARCHIVE</div>
+      <h3 class="drawer-title">历史 · 推演</h3>
+    </div>
+    <button class="drawer-close" data-close-drawer type="button" aria-label="关闭">
+      <i class="ph-bold ph-x"></i>
+    </button>
+  </header>
+  <div class="drawer-body" id="history-body">
+    <div class="history-empty">
+      <div class="history-empty-title">尚无历史推演</div>
+      <div class="history-empty-sub">完成一次推演后会自动保存（最多 20 条）</div>
+    </div>
+  </div>
+  <footer class="drawer-footer">
+    <button class="btn-secondary" id="btn-clear-history" type="button" style="width:100%;">
+      <i class="ph-bold ph-trash"></i>
+      <span>清空全部历史</span>
+    </button>
+  </footer>
+</aside>
+
+<!-- ================================================ TOAST -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- ================================================ REPORT OVERLAY (drill-in) -->
+<div class="report-overlay-backdrop" id="report-overlay-backdrop"></div>
+<div class="report-overlay" id="report-overlay">
+  <div class="report-overlay-inner">
+    <header class="report-overlay-header">
+      <div class="report-overlay-title" id="report-overlay-title">推演卷宗</div>
+      <div class="report-overlay-actions">
+        <button class="tool-btn" id="overlay-export-html" type="button" title="导出独立 HTML">
+          <i class="ph-bold ph-download-simple"></i>
+        </button>
+        <button class="tool-btn" id="overlay-copy-md" type="button" title="复制 Markdown">
+          <i class="ph-bold ph-copy"></i>
+        </button>
+        <button class="tool-btn" id="overlay-close" type="button" title="关闭">
+          <i class="ph-bold ph-x"></i>
+        </button>
+      </div>
+    </header>
+    <article class="report report-overlay-content" id="report-overlay-content"></article>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// 命途推演 · 主应用逻辑
+// ============================================================
+"use strict";
+
+// ============================================================
+// 1. PROMPTS（与 prompts.md 保持一致）
+// ============================================================
+
+const ARCHITECT_PROMPT = `你是一名【推演结构架构师】。
+
+你的唯一任务：根据用户提供的决策信息，设计一份最适合该决策的【推演章节结构规范】，交给下游的推演师 AI 按此结构生成完整报告。
+
+你不输出推演内容本身，只输出结构。
+
+═══════════════════════════════════════════════
+【一、输入数据】
+═══════════════════════════════════════════════
+用户提交的所有表单字段（包含可能为空的字段）、用户填写的"补充信息"自由文本、当前年份、用户选择的推演深度（快速 / 标准 / 极致）。
+
+注意：「补充信息」字段是最高优先级线索，它可能包含用户决策的真实驱动因素。
+
+═══════════════════════════════════════════════
+【二、判断流程】
+═══════════════════════════════════════════════
+
+步骤 1 · 决策性质归类
+将本次决策归入以下一类或多类（多类时取最主要的）：
+- 资源配置型：涉及金钱、时间、精力的分配（如转行、跳槽、买房、留学）
+- 情感关系型：涉及亲密关系、家庭、亲子（如选择伴侣、要不要孩子、和父母同住）
+- 风险博弈型：涉及不确定性下的大额下注（如创业、投资、辞职 gap）
+- 身份转换型：涉及生活方式、社会角色的彻底重构（如移民、出家、性别认同、退休）
+- 时间窗口型：涉及一个不可逆的时间点决断（如保研选择、生育时机、医疗方案）
+- 混合型：明显跨越多个类别
+
+步骤 2 · 选择结构策略
+输出 structure_strategy 之一：
+- "keep_default"：默认 6 段足以覆盖
+- "modify"：以默认 6 段为基础，替换或新增 1-3 个章节
+- "rewrite"：默认结构完全不适用，需要彻底重写章节
+
+步骤 3 · 设计章节列表
+要求：
+- 至少 6 段（可以更多，但不超过 10 段）
+- 每段必须包含：title / purpose / required_elements / word_budget
+- required_elements 从「通用产出元素库」中挑选并组合，也可自定义新元素
+
+【word_budget 的精确定义 — 务必读懂】
+- 单位：**中文汉字字符数**（不是英文 word 数，不是 token 数，不是字节数）
+- 1 个汉字 = 1 字。例如「决策核心矛盾」= 6 字。
+- 必须按以下规模设计每章（部分核心章节可适当上调）：
+  - 快速档（总 3500 字）：每章 400-800 字
+  - 标准档（总 7000 字）：每章 800-1500 字
+  - 极致档（总 11000 字）：每章 1500-2500 字
+- **word_budget 总和必须接近目标总字数（±10% 容差）**
+- 反例（绝对禁止）：每章 word_budget 给 100、200、300 的小数字——这是把"字"误当作"word/句"造成的，下游会严重欠输出。
+
+═══════════════════════════════════════════════
+【三、默认 6 段参考基线】
+═══════════════════════════════════════════════
+1. 决策核心矛盾 - 点出"显性收益 vs 隐性代价"的本质冲突
+2. 经济链路推演 - 10 年财务对照表 + ASCII 资产曲线 + 反直觉点
+3. 社交人脉演化 - 3/5/10 年节点 + 失去 vs 获得 + 人脉结构表
+4. 极端风险模拟 - 5 种最坏情况，每种含触发链路 + 代价 + Plan A/B/C
+5. 平行宇宙路径 - 3 条非主流路径 + 操作/逻辑/估算/星级/致命缺点
+6. 最终推演结论 - 决策对比汇总表 + 锋利结论 + 关键反问句
+
+═══════════════════════════════════════════════
+【四、按决策类型的章节适配指南（few-shot）】
+═══════════════════════════════════════════════
+
+▸ 婚恋决策（情感关系型）→ rewrite
+  推荐章节：关系本质拆解 / 兼容性矩阵（7 维 × 评分）/ 婚姻经济模型 / 原生家庭对冲分析 / 5-10-20 年关系演化 / 退出成本表（含已育与未育）/ 3 条平行宇宙（开放式关系/推迟婚姻/不婚同居）/ 最终结论
+
+▸ 健康决策 → rewrite
+  推荐章节：决策核心矛盾 / 医学概率与生活质量曲线 / 治疗方案对照表 / 经济医疗压力测试 / 5 种最坏情况（含并发症/复发/家庭崩塌）/ 家庭与社会角色重构 / 3 条平行路径 / 最终结论
+
+▸ 创业决策 → modify
+  替换"经济链路"为"现金流断点模拟"（18 个月 burn rate + 融资里程碑）
+  新增"市场窗口与赛道地图"
+  强化"极端风险"为 7 种（含合伙人反目/监管反转/技术替代）
+  新增"失败兜底网络"
+
+▸ 移民/迁徙 → modify
+  新增"文化适应曲线" / "身份重置成本" / "代际跨度影响"
+  保留"经济链路"加入汇率与税制差异
+
+▸ 教育子女 → rewrite
+  新增"孩子发展概率分布" / "亲子关系演化曲线" / "家庭资源分配模型"
+
+▸ 投资决策 → modify
+  替换"经济链路"为"概率分布与回撤压力测试"
+  新增"流动性陷阱模拟" / "机会成本对照"
+
+═══════════════════════════════════════════════
+【五、通用产出元素库】
+═══════════════════════════════════════════════
+数据类：财务对照表 / ASCII 资产曲线 / 概率分布表 / 退出成本表 / 兼容性矩阵 / 决策对比汇总表 / 通胀购买力校准说明
+时间序列类：3/5/10/20 年节点演化 / 失去与获得 / 关键拐点标注
+风险类：N 种最坏情况 / 触发链路 / 净资产-心理-时间代价 / Plan A/B/C / 失败兜底资源清单
+替代路径类：3 条平行宇宙 / 操作步骤 / 底层逻辑 / 可行性星级 / 致命缺点 / 10 年净资产估算
+结语类：一句话锋利结论 / 3 个关键反问句 / 行动手册
+特殊类：反直觉点段落 / 文化适应曲线 / 现金流断点 / QALY 曲线
+
+═══════════════════════════════════════════════
+【六、输出格式（严格 JSON）】
+═══════════════════════════════════════════════
+
+只输出 JSON，前后不要包裹任何文字、不要包裹三反引号代码块。
+
+{
+  "decision_category": "string",
+  "structure_strategy": "keep_default | modify | rewrite",
+  "rationale": "为何选择这种结构（1-2 句）",
+  "search_queries": ["查询1", "查询2", "查询3"],
+  "sections": [
+    {
+      "title": "章节标题",
+      "purpose": "本章要回答什么问题",
+      "required_elements": ["元素1", "元素2"],
+      "word_budget": 1000
+    }
+  ]
+}
+
+═══════════════════════════════════════════════
+【七、search_queries 字段（仅当用户消息中标注"联网检索已启用"时输出）】
+═══════════════════════════════════════════════
+
+如果用户消息末尾包含「【联网检索已启用】」标记，你必须额外输出 **4-6 个** Tavily 搜索查询。
+
+【双路径均衡原则 — 最重要】
+
+如果决策有两个选项（选项 A 与选项 B），你的查询必须均衡覆盖两条路径，而不是只搜"目标方向"。
+
+具体配比要求（4-6 条总查询）：
+- 至少 **1-2 条**针对选项 A（用户**正在考虑转向**的路径）
+- 至少 **1-2 条**针对选项 B（用户**正在考虑放弃**的路径）
+- 至少 **1 条**对照型查询（横向比较两个选项的共同维度，如收入对比、长期发展对比）
+- 0-1 条机会成本 / 风险查询（如行业景气下行、退出成本等）
+
+**反例 — 绝对禁止**：4 条查询全部围绕一个选项展开。例如用户决策是"留地质 vs 转 AI"，不允许 4 条查询都是 AI 行业的，必须有专门搜"地质工程保研、油气行业就业、地大就业"的查询。
+
+【生成原则（适用所有查询）】
+1. 查询是为了拉取本次决策真正需要的【实时数据】，下游推演师会基于这些数据做事实校准
+2. 每个查询围绕一个核心数据维度（行业薪资 / 政策法规 / 录取数据 / 行业景气 / 同类案例 / 风险事件……）
+3. 查询要"搜得到东西"：用具体可检索的关键词，避免抽象表述
+4. 查询应充分利用决策的【语义信息】，而非简单复制表单原文（用户原文的字面词可能引发歧义检索，例如「兰大大二」字面会拉到"兰州中考"内容）
+5. **混合中英关键词**：行业术语、专业名、数据源名可用英文（如 GPA、graduate admission rate、AI startup salary）以提升召回质量
+6. 每条查询长度 6-30 字符为佳
+7. 用户表单中已经写明的内容不要重复查询（如已知"兰州大学"，则查"兰州大学 AI 转专业 录取" 而非"什么是兰州大学"）
+
+【按决策类型的查询设计指南（双路径示例）】
+
+▸ 学业 / 转专业决策示例（兰大转 AI vs 留地质保研 C9）：
+
+  AI 路径方向（选项 A）：
+  "兰州大学 人工智能学院 转专业 录取率 GPA 2026"
+  "AI 算法工程师 应届硕士 起薪 一线城市 2026"
+  "AI 行业 大模型 应届就业 通缩 2026"
+
+  地质路径方向（选项 B）：
+  "兰州大学 地质工程 保研 中科大 中山大学 录取 2026"
+  "地质工程 就业 油气 双碳 央企 2026"
+  "中石化 中石油 应届生 起薪 待遇 2026"
+
+  对照：
+  "AI 算法岗 vs 地质工程 长期 收入 职业 对比"
+
+  从上述 7 条中精选 4-6 条提交。
+
+▸ 职业 / 考公决策示例（互联网 vs 考公）：
+
+  互联网路径（选项 A）：
+  "互联网产品经理 35岁 优化 裁员 趋势 2026"
+  "杭州 互联网 中厂 P7 年终奖 2026"
+
+  公务员路径（选项 B）：
+  "公务员 国考 报录比 招录人数 2026"
+  "三线城市 公务员 工资 福利 公积金 2026"
+  "辞职考公 备考 上岸率 通过率"
+
+  对照：
+  "互联网 vs 公务员 10年 收入 稳定性 对比"
+
+▸ 创业 / 上班对照决策示例：
+
+  创业路径：
+  "{赛道名} 创业 失败率 早期 估值 2026"
+  "天使轮 平均估值 {赛道} 2026"
+
+  打工路径：
+  "{行业} 中层 薪资 期权 套现 2026"
+  "{大厂名} P8 总包 范围 2026"
+
+  对照：
+  "创业 vs 大厂 财富 10年 期望值 风险"
+
+▸ 婚恋决策示例（结婚 vs 单身 / 离婚 vs 继续）：
+
+  结婚/继续方向：
+  "{城市} 婚姻 离婚率 数据 2026"
+  "婚姻经济 双职工 财务对冲"
+
+  独立/分手方向：
+  "单身 35岁 资产 心理 调查"
+  "离婚 财产分割 子女抚养 2026"
+
+  对照：
+  "已婚 vs 单身 10年 净资产 幸福度"
+
+▸ 移民 / 留守决策示例：
+
+  移民方向：
+  "{目的国} 工签 H1B 抽签 2026"
+  "{目的国} 中国移民 5年 适应 调查"
+
+  留守方向：
+  "{原城市} 中产 5年 资产 通胀"
+  "{原城市} 双减 教育 学区 2026"
+
+  对照：
+  "移民 vs 留守 子女 10年 路径对比"
+
+【反例 — 绝对不要生成】
+- "兰大大二转专业"（直接复制标题，语义模糊会引爆中学/中考相关内容）
+- "怎么办"、"哪个好"（无信息量的疑问句）
+- "人生规划"、"未来发展"（抽象到无法检索）
+- 单词查询，如"AI"、"创业"（太宽）
+- **4 条以上查询都围绕同一个选项**（必须均衡）
+
+═══════════════════════════════════════════════
+【八、校验自检】
+═══════════════════════════════════════════════
+□ JSON 格式合法
+□ sections 长度 ≥ 6
+□ 每个 section 含 title / purpose / required_elements / word_budget
+□ word_budget 总和接近目标深度档位
+□ 若联网启用：search_queries 含 3-5 条具体可检索的查询，已避开字面歧义
+□ JSON 外不输出任何文字`;
+
+
+const STRATEGIST_PROMPT_TEMPLATE = `你是顶级人生战略推演师，融合行为经济学家、社会学家、行业分析师、风险精算师、家庭治疗师五重身份。
+
+你的推演基于真实数据和概率分布，不是鸡汤、不是星座、不是 MBTI 决定论。你输出的是基于数字的冷峻沙盘——把每条路径的代价、概率、隐性成本摆清楚，但不替用户做决定。
+
+═══════════════════════════════════════════════
+§ 1 · 输入解析规则
+═══════════════════════════════════════════════
+1. 【补充信息】字段 = 最高优先级线索。若与其他结构化字段冲突，以此为准。
+2. 【不可妥协的硬约束】= 绝对边界。所有推演路径必须满足，否则该路径直接淘汰。
+3. 【推演侧重】= 结尾建议倾向方向，但不允许遮蔽客观代价。
+4. 【决策选项 A / B】= 主对照线。
+5. 其他结构化字段 = 推演基础参数。
+6. 未填字段：用中位数/普通人假设填充，并在报告开头【前置事实校准】中显式声明。
+7. 数字区间字段：取区间中位数计算（如「5-20 万」按 12.5 万计算）。
+
+═══════════════════════════════════════════════
+§ 2 · 宏观背景注入（必须遵守）
+═══════════════════════════════════════════════
+
+时间基准：当前年份 ${'$'}{CURRENT_YEAR}，所有"未来 N 年"以此为起点。
+
+宏观经济假设（中国，${'$'}{CURRENT_YEAR}-${'$'}{CURRENT_YEAR_PLUS_10}）：
+- CPI 年均 2.0-2.5%；M2 增速 6-8%
+- GDP 年均 4.0-4.8%；失业率 5.0-7.2%
+- 资产数字一律以"当前购买力等价 RMB"计，剔除 CPI 通胀
+
+房价假设：
+- 一线核心区：${'$'}{CURRENT_YEAR}-+2 横盘，+3 至 +6 阴跌累计 -8%，+7 至 +10 微涨 +5%
+- 二线省会：${'$'}{CURRENT_YEAR}-+4 阴跌 -10%，+5 起横盘
+- 三四线：${'$'}{CURRENT_YEAR}-+9 持续阴跌 -15% 至 -25%
+
+城市生活成本基线（单人月，含房租，${'$'}{CURRENT_YEAR} 购买力）：
+- 一线（北上深）：12000-18000 元
+- 新一线（杭蓉武渝）：7000-11000 元
+- 二线省会：5000-8000 元
+- 三四线：3000-5000 元
+- 县城：2000-3500 元
+
+主要行业 5 年景气预测：
+- AI/大模型：顶部 → 通缩 → 成熟稳定
+- 半导体/硬科技：国家战略持续，但卷度极高
+- 新能源/双碳：政策红利期
+- 油气/传统能源：双碳叠加深地战略，U 型回升
+- 生物医药：创新药出海窗口
+- 房地产/建筑：长期收缩
+- 教培/K12：监管常态化
+- 公务员/体制：稳定但晋升通道愈发拥挤
+
+汇率：USD/CNY 6.8-7.5 区间波动。
+
+涉及未覆盖领域用常识但必须标注「估算」。
+
+${'$'}{SEARCH_EVIDENCE}
+═══════════════════════════════════════════════
+§ 3 · 输出结构（严格执行下述 sections 规范）
+═══════════════════════════════════════════════
+
+下游 sections 规范（JSON）：
+${'$'}{SECTIONS_JSON}
+
+执行要求：
+- 严格按数组顺序输出每一章
+- 章节标题用 \`## 一、{title}\`、\`## 二、{title}\` 形式（中文序号 + 顿号）
+- 每章必须完整覆盖 required_elements 中的所有元素
+- 每章总字数控制在 word_budget ±20% 范围内
+- 不得遗漏、不得合并、不得调序
+
+═══════════════════════════════════════════════
+§ 4 · 通用产出元素的标准格式
+═══════════════════════════════════════════════
+
+【财务对照表】Markdown 表格，列至少包含：年份 / 状态 / 路径A 净资产/万 / 路径B 净资产/万 / 对照基准/万
+- 单位万元剔通胀；关键拐点单元格用 **粗体**
+
+【ASCII 资产曲线】用三反引号代码块包裹，横轴年份纵轴万元，用 ● 标记数据点
+
+【3/5/10 年节点演化】每节点：**N 年节点（YYYY → YYYY）**
+- 会失去的关键连接：...（具体到人数与场景）
+- 会获得的新连接：...（具体到圈层）
+
+【N 种最坏情况】每种独立：
+**风险 K：标题（概率 NN%）**
+- 触发链路：A → B → C → D
+- 净资产代价：相比基准损失 N 万 + N 年时间
+- 脱困预案：Plan A / Plan B / Plan C
+
+【3 条平行路径】每条独立：
+**路径 X1：标题（可行性 ★★★★☆）**
+- 操作：...
+- 底层逻辑：...
+- 10 年净资产估算：+N ~ +N 万
+- 致命缺点：...
+
+【决策对比汇总表】| 选项 | 期望净资产 | 心理收益 | 隐性代价 | 推荐度 |
+
+【兼容性矩阵】（婚恋类）| 维度 | 评分 | 说明 |
+
+【概率分布表】（健康/投资类）| 场景 | 概率 | 5 年后果 | 10 年后果 |
+
+【退出成本表】| 退出时点 | 沉没成本 | 机会成本 | 净退出代价 |
+
+═══════════════════════════════════════════════
+§ 5 · 风格强约束（违反任何一条均视为不合格）
+═══════════════════════════════════════════════
+
+禁用空词：「多元化」「自我成长」「做最好的自己」「加油」「相信自己」「随心而动」「遵从内心」「一切都是最好的安排」「无论选什么都不会错」
+
+禁鸡汤、禁心灵学、禁星座/MBTI 决定论
+
+禁泛指「也许」「可能会」「大概」；必须给具体概率（如「概率 35%」）或区间（如「3-5 年内」）
+
+必须用具体数字：薪资「24k/月」/年到手 38 万；概率「25%」；时间「2031 年 6 月」
+
+关键拐点/反直觉点/重要警告用 \`**粗体**\`
+
+不确定数据标注「（估算）」「（假设）」「（数据基于 YYYY 年公开信息，请核实）」
+
+若 § 2.5 提供了检索证据：**每个核心章节至少明引 1 条**，引用格式 「（检索证据 [n]）」 或 「（参考检索证据 [n]·{域名}）」。详细规则见 § 6 分支 A。
+
+语调：冷峻、精准、有锋芒。允许直言「你正在用 X 换 Y，代价是 Z 万元」。不必委婉，但保持尊重。
+
+═══════════════════════════════════════════════
+§ 6 · 反 Hallucination 防护（双分支硬规则）
+═══════════════════════════════════════════════
+
+【分支 A · 若 § 2.5 提供了检索证据 — 检索证据为强制最高优先级】
+
+1. **凡涉及具体数字（薪资/概率/政策/价格/录取率/分数线/景气度等）**：
+   - 证据中已出现 → 必须采用证据中的数字，并在数字后紧接 「（检索证据 [n]）」
+   - 证据中未出现 → 标注 「（估算）」并简述推理来源，**禁止给出精确到个位数的伪数字**
+2. **每个核心章节必须明引至少 1 条检索证据**。全文明引数量必须 ≥ 检索证据总数的 60%。
+3. **报告最末必须有 \`## 附录 · 引用文献索引\`**：按编号列出全部明引到的证据 + 标题 + URL。附录不计入正文 word_budget。
+4. 证据间冲突时，须在引用处用一句话指出冲突 + 说明你倾向采信哪条的理由。
+5. 不得编造检索证据未支持的精确数字、具体公司名称、具体当事人。
+
+【分支 B · 若 § 2.5 不存在（用户未启用联网）— 走原 Hallucination 防护】
+
+- 涉及公司薪资/政策/行业景气 → 末尾标注 「（数据基于 ${'$'}{CURRENT_YEAR} 年公开信息，请核实）」
+- 涉及大学保研率/专业排名 → 标注 「（估算）」
+- 不得编造具体人名、具体真实案例
+- 数字不确定时给区间不给单点
+- 训练数据外的近期事件明确说「此为推测」
+
+═══════════════════════════════════════════════
+§ 7 · Few-shot 锚定（合格输出的样子）
+═══════════════════════════════════════════════
+
+示例输入摘要：兰大大二，从地质工程转 AI（原专业可保研 C9）。19 岁男，老家西北小城。
+
+示例输出片段：
+
+## 二、经济链路推演
+
+### 1. 三条主路径界定
+- 路径 A：转 AI + 兰大本校保研 + 留一线
+- 路径 B：转 AI + 兰大本校读研 + 回老家
+- 路径 C（基准）：留地质 + 保研 C9 + 油气央企
+
+### 2. 年度财务对照表
+| 年份 | 状态 | 路径A 净资产/万 | 路径B 净资产/万 | 路径C 净资产/万 |
+|---|---|---|---|---|
+| 2026 | 转专业完成 | 0 | 0 | 0 |
+| 2027 | 大三补课 | -1.2 | -1.2 | +0.5 |
+| 2031 | 毕业入职 | **+18** | +14 | +22 |
+| 2032 | 工作 1 年 | **+38** | +28 | +44 |
+
+### 3. 反直觉点
+**反直觉点一**：AI 在一线 2031 年起薪 24k 的预测已经偏乐观。2026 年应届硕士算法岗起薪中位数已从 2023 年的 35k 跌到 22k（估算）。
+**反直觉点二**：路径 C 后期反超。地质行业 2030 年后受双碳/深地战略拉动，央企"年限+职级"双轨制使工作 5 年后年综合收入反超普通一线 AI 工程师。
+
+[按上述颗粒度、用数字、用粗体、用对照表组织你的输出]
+
+═══════════════════════════════════════════════
+§ 8 · 长度控制（硬性强制要求 — 违反视为不合格输出）
+═══════════════════════════════════════════════
+
+"字"的精确定义：**中文汉字字符数**（不含空格、英文字符、标点符号、Markdown 标记）。
+
+【硬性下限】
+- 本次深度档位：${'$'}{DEPTH}
+- sections 总 word_budget = ${'$'}{TOTAL_BUDGET} 字
+- 实际总输出必须 ≥ ${'$'}{TOTAL_BUDGET} × 0.85 字
+- 每章实际字数必须 ≥ 该章 word_budget × 0.85
+
+【深度档位字数底线】
+- 快速档：实际中文字符 ≥ 3000
+- 标准档：实际中文字符 ≥ 6000
+- 极致档：实际中文字符 ≥ 9000（目标 11000-12000）
+
+【LLM 常见欠输出陷阱及应对】
+你（LLM）在中文长文输出时常会"自觉地保持简洁"——这在本场景是错误的。如果你写完某章感觉够了，请检查：
+1. 是否每个数据点都有具体数字？薪资写「24k/月」而非「不错」；概率写「35%」而非「较高」
+2. 反直觉点段落是否足够？每章核心论点应有 2-3 个反直觉段落，每段 80-150 字详细论证
+3. 表格行数是否够多？财务对照表必须有 10 年数据（10 行）；风险表至少 5-7 行；平行路径每条独立详述至少 200 字
+4. 是否有 \`### 子标题\` 分层？每章应 2-4 个子标题，每个子标题下至少 200-400 字正文
+5. 时间节点是否细化？关键事件细化到年/季度/月
+
+【不允许的输出模式】
+- 用列表代替段落（列表只能作为段落的补充，不能成为整章主体）
+- 一个段落只有 1-2 句话
+- 表格只有 2-3 行
+- 跳过 required_elements 中的元素
+- 章节标题下直接结束（每章至少 800 字以上）
+
+【如果总字数明显不够】
+回到 required_elements 清单，对每一个元素：
+- 是否给出了具体数字、年份、概率？
+- 是否给出了反例与边角案例？
+- 是否给出了 plan A/B/C 的具体操作步骤？
+- 是否对每条平行路径给出了 5 项细则（操作/逻辑/估算/星级/致命缺点）？
+
+═══════════════════════════════════════════════
+§ 9 · 格式规范
+═══════════════════════════════════════════════
+- 章节：## 一、xxx / ## 二、xxx
+- 子标题：### 1. xxx / ### 2. xxx
+- 表格：标准 Markdown
+- ASCII 图：三反引号代码块
+- 强调：**粗体** 用于关键拐点
+- 列表：使用 - 而非 *
+
+═══════════════════════════════════════════════
+§ 10 · 安全边界
+═══════════════════════════════════════════════
+- 违法/自残/伤人决策 → 拒绝并提供求助渠道（如全国心理援助热线 400-161-9995）
+- 医疗 → 标注「本报告不构成医疗建议，请咨询执业医师」
+- 婚姻法律 → 标注「本报告不构成法律建议，请咨询执业律师」
+
+═══════════════════════════════════════════════
+【用户提交的决策数据】
+═══════════════════════════════════════════════
+${'$'}{USER_DATA}
+
+═══════════════════════════════════════════════
+【输出开始】
+═══════════════════════════════════════════════
+按上述 sections 规范从第一章开始输出，全程中文。`;
+
+
+// ============================================================
+// 2. STATE
+// ============================================================
+
+const state = {
+  config: {
+    apiBase: 'https://api.deepseek.com/v1',
+    apiKey: '',
+    model: 'deepseek-chat',
+    depth: '标准',
+    searchEnabled: false,
+    tavilyKey: ''
+  },
+  form: {},
+  sections: null,
+  evidence: null,
+  report: '',
+  isGenerating: false,
+  abortController: null,
+  history: []
+};
+
+const DEPTH_BUDGET = { '快速': 3500, '标准': 7000, '极致': 11000 };
+// max_tokens per depth — note Chinese chars ≈ 1.5-2 tokens
+const MAX_TOKENS_BY_DEPTH = { '快速': 6000, '标准': 12000, '极致': 16000 };
+
+const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+
+// ============================================================
+// 3. CONFIG / STORAGE
+// ============================================================
+
+const LS_CONFIG = 'mt_config';
+const LS_HISTORY = 'mt_history';
+const LS_FORM = 'mt_form_draft';
+
+function loadConfig() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(LS_CONFIG) || '{}');
+    Object.assign(state.config, saved);
+  } catch (e) { console.warn('load config fail', e); }
+  $('#cfg-base').value = state.config.apiBase;
+  $('#cfg-key').value = state.config.apiKey;
+  $('#cfg-model').value = state.config.model;
+  $('#cfg-tavily-key').value = state.config.tavilyKey || '';
+  $('#cfg-search-enabled').checked = !!state.config.searchEnabled;
+  $$('.depth-pill').forEach(p => p.classList.toggle('selected', p.dataset.val === state.config.depth));
+  $('#depth-indicator').textContent = 'depth · ' + state.config.depth;
+}
+
+function saveConfig() {
+  state.config.apiBase = $('#cfg-base').value.trim() || 'https://api.deepseek.com/v1';
+  state.config.apiKey = $('#cfg-key').value.trim();
+  state.config.model = $('#cfg-model').value.trim() || 'deepseek-chat';
+  state.config.tavilyKey = $('#cfg-tavily-key').value.trim();
+  state.config.searchEnabled = $('#cfg-search-enabled').checked;
+  const depthEl = $$('.depth-pill.selected')[0];
+  if (depthEl) state.config.depth = depthEl.dataset.val;
+  localStorage.setItem(LS_CONFIG, JSON.stringify(state.config));
+  $('#depth-indicator').textContent = 'depth · ' + state.config.depth;
+  toast('配置已保存', 'ok');
+  closeDrawer('settings');
+}
+
+function clearKey() {
+  if (!confirm('确定要清空 API Key 吗？')) return;
+  $('#cfg-key').value = '';
+  state.config.apiKey = '';
+  localStorage.setItem(LS_CONFIG, JSON.stringify(state.config));
+  toast('API Key 已清空', 'warn');
+}
+
+// ============================================================
+// 4. FORM SERIALIZATION
+// ============================================================
+
+function readForm() {
+  const f = {
+    title: $('#f-title').value.trim(),
+    optionA: $('#f-option-a').value.trim(),
+    optionB: $('#f-option-b').value.trim(),
+    types: getMultiPills('types'),
+    deadline: $('#f-deadline').value.trim(),
+    age: $('#f-age').value.trim(),
+    gender: getSinglePill('gender'),
+    cityNow: $('#f-city-now').value.trim(),
+    cityHome: $('#f-city-home').value.trim(),
+    education: getSinglePill('education'),
+    job: $('#f-job').value.trim(),
+    assets: getSinglePill('assets'),
+    debt: getSinglePill('debt'),
+    income: getSinglePill('income'),
+    familySupport: getSinglePill('family_support'),
+    parentsHealth: getSinglePill('parents_health'),
+    parentsEcon: getSinglePill('parents_econ'),
+    parentsLoc: getSinglePill('parents_loc'),
+    onlyChild: getSinglePill('only_child'),
+    marital: getSinglePill('marital'),
+    familyAttitude: getSinglePill('family_attitude'),
+    skills: $('#f-skills').value.trim(),
+    network: $('#f-network').value.trim(),
+    risk: getSinglePill('risk'),
+    health: getSinglePill('health'),
+    mbti: $('#f-mbti').value,
+    constraints: $('#f-constraints').value.trim(),
+    priorities: getMultiPills('priorities'),
+    supplement: $('#f-supplement').value.trim()
+  };
+  state.form = f;
+  localStorage.setItem(LS_FORM, JSON.stringify(f));
+  return f;
+}
+
+function loadFormDraft() {
+  try {
+    const draft = JSON.parse(localStorage.getItem(LS_FORM) || '{}');
+    if (draft.title) $('#f-title').value = draft.title;
+    if (draft.optionA) $('#f-option-a').value = draft.optionA;
+    if (draft.optionB) $('#f-option-b').value = draft.optionB;
+    if (draft.deadline) $('#f-deadline').value = draft.deadline;
+    if (draft.age) $('#f-age').value = draft.age;
+    if (draft.cityNow) $('#f-city-now').value = draft.cityNow;
+    if (draft.cityHome) $('#f-city-home').value = draft.cityHome;
+    if (draft.job) $('#f-job').value = draft.job;
+    if (draft.skills) $('#f-skills').value = draft.skills;
+    if (draft.network) $('#f-network').value = draft.network;
+    if (draft.mbti) $('#f-mbti').value = draft.mbti;
+    if (draft.constraints) $('#f-constraints').value = draft.constraints;
+    if (draft.supplement) $('#f-supplement').value = draft.supplement;
+    setMultiPills('types', draft.types || []);
+    setMultiPills('priorities', draft.priorities || []);
+    setSinglePill('gender', draft.gender);
+    setSinglePill('education', draft.education);
+    setSinglePill('assets', draft.assets);
+    setSinglePill('debt', draft.debt);
+    setSinglePill('income', draft.income);
+    setSinglePill('family_support', draft.familySupport);
+    setSinglePill('parents_health', draft.parentsHealth);
+    setSinglePill('parents_econ', draft.parentsEcon);
+    setSinglePill('parents_loc', draft.parentsLoc);
+    setSinglePill('only_child', draft.onlyChild);
+    setSinglePill('marital', draft.marital);
+    setSinglePill('family_attitude', draft.familyAttitude);
+    setSinglePill('risk', draft.risk);
+    setSinglePill('health', draft.health);
+  } catch (e) { console.warn(e); }
+}
+
+function getSinglePill(field) {
+  const group = document.querySelector(`[data-field="${field}"]`);
+  if (!group) return '';
+  const sel = group.querySelector('.pill.selected, .segment.selected');
+  return sel ? sel.dataset.val : '';
+}
+function getMultiPills(field) {
+  const group = document.querySelector(`[data-field="${field}"][data-multi]`);
+  if (!group) return [];
+  return [...group.querySelectorAll('.pill.selected')].map(p => p.dataset.val);
+}
+function setSinglePill(field, val) {
+  const group = document.querySelector(`[data-field="${field}"]`);
+  if (!group || !val) return;
+  group.querySelectorAll('.pill, .segment').forEach(p => {
+    p.classList.toggle('selected', p.dataset.val === val);
+  });
+}
+function setMultiPills(field, vals) {
+  const group = document.querySelector(`[data-field="${field}"][data-multi]`);
+  if (!group) return;
+  group.querySelectorAll('.pill').forEach(p => {
+    p.classList.toggle('selected', vals.includes(p.dataset.val));
+  });
+}
+
+function formatFormForPrompt(f) {
+  const lines = [];
+  const push = (label, val) => {
+    if (val && val.length) lines.push(`【${label}】${Array.isArray(val) ? val.join('、') : val}`);
+  };
+  push('决策标题', f.title);
+  push('选项 A', f.optionA);
+  push('选项 B', f.optionB);
+  push('决策类型', f.types);
+  push('决策时间窗口', f.deadline);
+  push('年龄', f.age);
+  push('性别', f.gender);
+  push('当前城市', f.cityNow);
+  push('老家城市', f.cityHome);
+  push('学历层级', f.education);
+  push('当前职业', f.job);
+  push('流动资产', f.assets);
+  push('负债水平', f.debt);
+  push('月收入', f.income);
+  push('家庭可调动支援', f.familySupport);
+  push('父母健康', f.parentsHealth);
+  push('父母经济水平', f.parentsEcon);
+  push('父母居住地', f.parentsLoc);
+  push('是否独生', f.onlyChild);
+  push('婚恋状态', f.marital);
+  push('家人态度', f.familyAttitude);
+  push('技能特长', f.skills);
+  push('关键人脉', f.network);
+  push('风险偏好', f.risk);
+  push('健康状况', f.health);
+  push('MBTI', f.mbti);
+  push('不可妥协的硬约束', f.constraints);
+  push('推演侧重', f.priorities);
+  if (f.supplement) {
+    lines.push('');
+    lines.push('【补充信息（最高优先级线索）】');
+    lines.push(f.supplement);
+  }
+  return lines.join('\n');
+}
+
+// ============================================================
+// 5. API CALLS
+// ============================================================
+
+async function testConnection() {
+  const base = $('#cfg-base').value.trim() || state.config.apiBase;
+  const key = $('#cfg-key').value.trim() || state.config.apiKey;
+  const model = $('#cfg-model').value.trim() || state.config.model;
+  if (!key) { showTestResult('err', '请先填入 API Key'); return; }
+  showTestResult('pending', '测试中…');
+  try {
+    const resp = await fetch(base.replace(/\/$/, '') + '/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
+      body: JSON.stringify({ model: model, messages: [{ role: 'user', content: '回复"OK"' }], max_tokens: 5 })
+    });
+    if (!resp.ok) {
+      const txt = await resp.text();
+      showTestResult('err', `HTTP ${resp.status} — ${txt.slice(0, 200)}`);
+      return;
+    }
+    const data = await resp.json();
+    const content = data.choices?.[0]?.message?.content || '(empty)';
+    showTestResult('ok', `连接成功 — 模型回复: ${content.slice(0, 50)}`);
+  } catch (e) {
+    showTestResult('err', `${e.message || e}`);
+  }
+}
+
+function showTestResult(type, msg) {
+  const el = $('#test-result');
+  el.className = 'test-result ' + type;
+  el.textContent = msg;
+}
+
+async function callLLMStream(messages, onChunk, signal, maxTokens) {
+  const base = state.config.apiBase.replace(/\/$/, '');
+  const resp = await fetch(base + '/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + state.config.apiKey },
+    body: JSON.stringify({
+      model: state.config.model, messages, stream: true,
+      temperature: 0.7, max_tokens: maxTokens || 16000
+    }),
+    signal
+  });
+  if (!resp.ok) {
+    const txt = await resp.text();
+    throw new Error(`HTTP ${resp.status}: ${txt.slice(0, 300)}`);
+  }
+  const reader = resp.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+  let full = '';
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    const lines = buffer.split('\n');
+    buffer = lines.pop() || '';
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed.startsWith('data:')) continue;
+      const data = trimmed.slice(5).trim();
+      if (data === '[DONE]') return full;
+      try {
+        const obj = JSON.parse(data);
+        const delta = obj.choices?.[0]?.delta?.content || '';
+        if (delta) { full += delta; onChunk(delta, full); }
+      } catch (e) { /* partial chunk */ }
+    }
+  }
+  return full;
+}
+
+async function callLLMNonStream(messages, signal) {
+  const base = state.config.apiBase.replace(/\/$/, '');
+  const doFetch = (extra) => fetch(base + '/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + state.config.apiKey },
+    body: JSON.stringify({ model: state.config.model, messages, temperature: 0.4, max_tokens: 2000, ...extra }),
+    signal
+  });
+  let resp;
+  try {
+    resp = await doFetch({ response_format: { type: 'json_object' } });
+  } catch (e) {
+    resp = await doFetch({});
+  }
+  if (!resp.ok) {
+    if (resp.status === 400) {
+      const resp2 = await doFetch({});
+      if (!resp2.ok) {
+        const txt = await resp2.text();
+        throw new Error(`HTTP ${resp2.status}: ${txt.slice(0, 300)}`);
+      }
+      const data = await resp2.json();
+      return data.choices?.[0]?.message?.content || '';
+    }
+    const txt = await resp.text();
+    throw new Error(`HTTP ${resp.status}: ${txt.slice(0, 300)}`);
+  }
+  const data = await resp.json();
+  return data.choices?.[0]?.message?.content || '';
+}
+
+// ============================================================
+// 6. WEB SEARCH (Tavily)
+// ============================================================
+
+function buildSearchQueries(f) {
+  const year = new Date().getFullYear();
+  const queries = [];
+  const title = (f.title || '').slice(0, 80);
+  if (!title) return [];
+
+  const types = (f.types || []).join(' ');
+  const city = f.cityNow || f.cityHome || '';
+
+  // Q1：标题 + 决策类型 + 年份（最广）
+  queries.push(`${title} ${types} ${year}`.trim().replace(/\s+/g, ' '));
+
+  // Q2：地域 + 行业/类型 + 趋势（聚焦地方）
+  if (city || f.job) {
+    const jobHint = (f.job || '').split(/[\/\s]+/).slice(0, 2).join(' ');
+    queries.push(`${city} ${jobHint} ${types} 趋势 ${year}`.trim().replace(/\s+/g, ' '));
+  }
+
+  // Q3：选项 A 与 B 的对照关键词（如果两条都填了）
+  if (f.optionA && f.optionB) {
+    const briefA = f.optionA.slice(0, 30);
+    const briefB = f.optionB.slice(0, 30);
+    queries.push(`${briefA} 对比 ${briefB} 数据 ${year}`);
+  }
+
+  return queries.filter(q => q.length > 6).slice(0, 3);
+}
+
+async function tavilySearch(query, signal) {
+  const resp = await fetch('https://api.tavily.com/search', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      api_key: state.config.tavilyKey,
+      query,
+      search_depth: 'advanced',
+      include_answer: false,
+      include_raw_content: false,
+      max_results: 10
+    }),
+    signal
+  });
+  if (!resp.ok) {
+    const txt = await resp.text();
+    throw new Error(`Tavily HTTP ${resp.status}: ${txt.slice(0, 200)}`);
+  }
+  return await resp.json();
+}
+
+async function runWebSearch(queries, signal, onProgress) {
+  if (!state.config.searchEnabled || !state.config.tavilyKey) return null;
+  if (!queries || !queries.length) return null;
+
+  // Per-query results buckets — used by coverage-aware aggregation below.
+  const buckets = [];                    // [{ query, results: [...] }, ...]
+  const errors = [];
+
+  for (let i = 0; i < queries.length; i++) {
+    const q = queries[i];
+    if (onProgress) onProgress({ phase: 'query', index: i, total: queries.length, query: q });
+    try {
+      const data = await tavilySearch(q, signal);
+      const results = Array.isArray(data?.results) ? data.results.map(r => ({
+        title: r.title || '',
+        url: r.url || '',
+        content: r.content || '',
+        score: r.score || 0,
+        query: q
+      })).sort((a, b) => b.score - a.score) : [];
+      buckets.push({ query: q, results });
+    } catch (e) {
+      if (e.name === 'AbortError') throw e;
+      errors.push({ query: q, message: e.message });
+      console.warn('[tavily] query failed:', q, e);
+      buckets.push({ query: q, results: [] });
+    }
+  }
+
+  const merged = aggregateSearchResults(buckets, { targetTotal: 12, minPerQuery: 2 });
+
+  if (onProgress) onProgress({ phase: 'done', count: merged.length, queries, errors });
+
+  return { queries, results: merged, errors };
+}
+
+/**
+ * Coverage-aware aggregation:
+ *   1. First pass: reserve min N results from each query bucket (guarantees query
+ *      diversity even when one query dominates score-wise).
+ *   2. Second pass: fill remaining slots globally by score.
+ *   3. Dedup by URL across both passes.
+ */
+function aggregateSearchResults(buckets, { targetTotal = 12, minPerQuery = 2 } = {}) {
+  const final = [];
+  const seenUrls = new Set();
+
+  // Pass 1 — guarantee coverage per query
+  for (const b of buckets) {
+    let taken = 0;
+    for (const r of b.results) {
+      if (taken >= minPerQuery) break;
+      if (!r.url || seenUrls.has(r.url)) continue;
+      seenUrls.add(r.url);
+      final.push(r);
+      taken++;
+    }
+  }
+
+  // Pass 2 — fill remaining by global score
+  if (final.length < targetTotal) {
+    const remaining = [];
+    for (const b of buckets) {
+      for (const r of b.results) {
+        if (!r.url || seenUrls.has(r.url)) continue;
+        seenUrls.add(r.url);
+        remaining.push(r);
+      }
+    }
+    remaining.sort((a, b) => b.score - a.score);
+    while (final.length < targetTotal && remaining.length) {
+      final.push(remaining.shift());
+    }
+  }
+
+  return final.slice(0, targetTotal);
+}
+
+function formatSearchEvidence(searchResult) {
+  if (!searchResult || !searchResult.results || !searchResult.results.length) return '';
+  const n = searchResult.results.length;
+  const minCite = Math.max(3, Math.ceil(n * 0.6));
+  const lines = [
+    '═══════════════════════════════════════════════',
+    '§ 2.5 · 实时网络检索证据 — 强制性最高优先级数据源',
+    '═══════════════════════════════════════════════',
+    '',
+    `本次推演前已通过 Tavily 完成 ${searchResult.queries.length} 次联网检索，召回 ${n} 条相关证据（见下方编号列表）。`,
+    '',
+    '【强制使用规则 — 违反任意一条视为不合格输出】',
+    '',
+    '1. 这些证据是本次推演的【主参考资料】，优先级严格高于：',
+    '   - 你的训练语料（很可能比这些证据过时 6-18 个月）',
+    '   - § 2 节中预设的宏观背景假设',
+    '   - 你凭直觉给出的任何数字',
+    '',
+    '2. 当下列证据与你训练语料或 § 2 假设冲突时，**无条件采信下列证据**。',
+    '',
+    `3. **每个核心章节必须明引至少 1 条检索证据**（全文至少明引 ${minCite} 条）。引用方式：`,
+    '   - 引用具体数字 / 事实：在数字后紧接 「（检索证据 [n]）」',
+    '     示例：`2025 届 AI 算法岗中位起薪 22k/月（检索证据 [3]）`',
+    '   - 引用观点 / 趋势：在论点后紧接 「（参考检索证据 [n]·{域名}）」',
+    '     示例：`长三角公务员竞争比近五年持续走高（参考检索证据 [5]·gov.cn）`',
+    '   - n 严格使用下方列表的编号',
+    '',
+    '4. 对于具体数字、概率、时间点、政策条款、公司动态：',
+    '   - 在证据中出现 → 必须使用证据中的数据，并标注 「（检索证据 [n]）」',
+    '   - 不在证据中 → 标注 「（估算）」并简述推理依据',
+    '   - **禁止编造证据未支持的精确数字**（如「某地公务员录取分数线 168 分」若证据中无此数据，必须改为给出范围 + 估算说明，并明确不引用任何证据编号）',
+    '',
+    '5. 报告最末必须新增一节 `## 附录 · 引用文献索引`，按编号列出全部明引到的检索证据：',
+    '   - 格式：`[n] 标题 — URL`',
+    '   - 该附录不计入正文 word_budget',
+    '',
+    '6. 若发现证据相互冲突，须在引用处用一句话指出冲突 + 给出你倾向于采信哪条的理由。',
+    '',
+    '═══════════════════════════════════════════════',
+    '【检索证据正文】',
+    '═══════════════════════════════════════════════',
+    ''
+  ];
+  searchResult.results.forEach((r, i) => {
+    lines.push(`[${i + 1}] ${r.title}`);
+    lines.push(`    来源：${r.url}`);
+    lines.push(`    匹配查询：${r.query}`);
+    const snippet = r.content.replace(/\s+/g, ' ').slice(0, 600);
+    lines.push(`    摘要：${snippet}`);
+    lines.push('');
+  });
+  lines.push('═══════════════════════════════════════════════');
+  lines.push('【再次强调】本节优先级 = 最高。引用即合规，未引用 = 不合格。');
+  lines.push('═══════════════════════════════════════════════');
+  return lines.join('\n');
+}
+
+// ============================================================
+// 7. TWO-STAGE PIPELINE  (now optionally preceded by web search)
+// ============================================================
+
+function getDefaultSections(depth) {
+  const total = DEPTH_BUDGET[depth] || 7000;
+  const ratios = [0.08, 0.20, 0.16, 0.20, 0.20, 0.16];
+  const titles = ['决策核心矛盾', '经济链路推演', '社交人脉演化', '极端风险模拟', '平行宇宙路径', '最终推演结论'];
+  const purposes = [
+    '点出"显性收益 vs 隐性代价"的本质冲突',
+    '量化两条路径未来 10 年的财务轨迹',
+    '预测决策对人脉结构的扰动',
+    '暴露 5 种最坏情况并给出脱困路径',
+    '跳出非此即彼，给出第三种可行性',
+    '把所有路径的代价摆在桌上，让用户自决'
+  ];
+  const elements = [
+    ['核心矛盾陈述', '前置事实校准表'],
+    ['10 年财务对照表', 'ASCII 资产曲线', '3 个以上反直觉点段落', '关键拐点标注'],
+    ['3 年节点演化', '5 年节点演化', '10 年节点演化', '四象限人脉结构对比表'],
+    ['5 种最坏情况', '每种含触发链路', '每种含净资产代价', '每种含 3 个 Plan A/B/C'],
+    ['3 条非主流路径', '每条含操作步骤', '每条含底层逻辑', '每条含 10 年净资产估算', '每条含可行性星级与致命缺点'],
+    ['决策对比汇总表', '一句话锋利结论', '3 个关键反问句']
+  ];
+  return titles.map((t, i) => ({
+    title: t,
+    purpose: purposes[i],
+    required_elements: elements[i],
+    word_budget: Math.round(total * ratios[i])
+  }));
+}
+
+function extractJSON(text) {
+  if (!text) return null;
+  let t = text.trim();
+  const fence = t.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if (fence) t = fence[1].trim();
+  const first = t.indexOf('{');
+  const last = t.lastIndexOf('}');
+  if (first < 0 || last < 0) return null;
+  try {
+    return JSON.parse(t.slice(first, last + 1));
+  } catch (e) { return null; }
+}
+
+function validateSections(parsed) {
+  if (!parsed || !Array.isArray(parsed.sections) || parsed.sections.length < 6) return null;
+  const valid = parsed.sections.every(s =>
+    s && typeof s.title === 'string' && typeof s.purpose === 'string'
+    && Array.isArray(s.required_elements) && typeof s.word_budget === 'number'
+  );
+  if (!valid) return null;
+  return parsed;
+}
+
+async function runArchitect(formData, depth, signal, useSearch) {
+  const userData = formatFormForPrompt(formData);
+  const year = new Date().getFullYear();
+  const budget = DEPTH_BUDGET[depth];
+  const searchHint = useSearch ? `
+
+═══════════════════════════════════════════════
+【联网检索已启用】
+═══════════════════════════════════════════════
+请在 JSON 输出中额外包含 search_queries 字段：**4-6 个**高质量 Tavily 搜索查询。
+生成原则与示例见系统消息【七、search_queries 字段】小节。
+
+【双路径均衡硬性要求】
+如果决策有两个选项 A 与 B：
+- 至少 1-2 条查询专门针对选项 A（用户考虑转向的路径）
+- 至少 1-2 条查询专门针对选项 B（用户考虑放弃的路径）
+- 至少 1 条对照型查询（横向比较两个选项的共同维度）
+- **绝对禁止 4 条以上查询都围绕同一个选项**
+
+关键提醒：
+- 不要直接复制决策标题做查询（会引发字面歧义检索）
+- 围绕本次决策真正需要的【实时数据维度】展开（行业薪资 / 政策 / 录取率 / 行业景气 / 同类案例）
+- 用户表单中已知的事实（学校名/城市名/职业）可以用，但要组合成具体可检索的关键词组` : '';
+
+  const userMsg = `当前年份：${year}
+推演深度：${depth}（目标总字数 ${budget} 字）
+
+用户提交的决策数据：
+${userData}
+${searchHint}
+
+请按要求输出 sections JSON${useSearch ? '（含 search_queries 字段，3-5 条）' : ''}。`;
+  const messages = [
+    { role: 'system', content: ARCHITECT_PROMPT },
+    { role: 'user', content: userMsg }
+  ];
+  const raw = await callLLMNonStream(messages, signal);
+  const parsed = extractJSON(raw);
+  const validated = validateSections(parsed);
+  if (!validated) {
+    return {
+      decision_category: '未分类（架构师输出异常，已回退默认结构）',
+      structure_strategy: 'keep_default',
+      rationale: '架构师返回内容无法解析，使用默认 6 段结构。',
+      sections: getDefaultSections(depth),
+      fallback: true
+    };
+  }
+  validated.sections = normalizeSections(validated.sections, DEPTH_BUDGET[depth] || 7000);
+  // sanitize search_queries: array of strings, max 6
+  if (validated.search_queries) {
+    if (!Array.isArray(validated.search_queries)) {
+      delete validated.search_queries;
+    } else {
+      validated.search_queries = validated.search_queries
+        .filter(q => typeof q === 'string' && q.trim().length > 3)
+        .map(q => q.trim())
+        .slice(0, 6);
+      if (!validated.search_queries.length) delete validated.search_queries;
+    }
+  }
+  return validated;
+}
+
+async function runStrategist(formData, sections, depth, signal, onChunk, evidence) {
+  const year = new Date().getFullYear();
+  const userData = formatFormForPrompt(formData);
+  const totalBudget = sections.reduce((sum, s) => sum + (s.word_budget || 0), 0);
+  const evidenceBlock = evidence ? formatSearchEvidence(evidence) : '';
+  const sysPrompt = STRATEGIST_PROMPT_TEMPLATE
+    .replace(/\$\{CURRENT_YEAR\}/g, year)
+    .replace(/\$\{CURRENT_YEAR_PLUS_10\}/g, year + 10)
+    .replace(/\$\{SECTIONS_JSON\}/g, JSON.stringify(sections, null, 2))
+    .replace(/\$\{TOTAL_BUDGET\}/g, totalBudget)
+    .replace(/\$\{DEPTH\}/g, depth)
+    .replace(/\$\{SEARCH_EVIDENCE\}/g, evidenceBlock)
+    .replace(/\$\{USER_DATA\}/g, userData);
+  const messages = [
+    { role: 'system', content: sysPrompt },
+    { role: 'user', content: `深度档位：${depth}。各章 word_budget 之和 = ${totalBudget} 中文字。请严格按 sections 数组顺序，从「## 一、...」开始输出，每章字数必须达到 word_budget 的 85% 以上。${evidence ? `\n\n【联网检索已启用】§ 2.5 中有 ${evidence.results.length} 条实时检索证据。规则：每个核心章节至少明引 1 条（引用格式「（检索证据 [n]）」），全文明引 ≥ ${Math.max(3, Math.ceil(evidence.results.length * 0.6))} 条，并在报告末尾追加「## 附录 · 引用文献索引」列出全部明引证据 + URL。具体数字必须优先采用证据中的数据。` : ''}` }
+  ];
+  return await callLLMStream(messages, onChunk, signal, MAX_TOKENS_BY_DEPTH[depth] || 12000);
+}
+
+// Normalize architect's section budgets — scale if total deviates too much from target
+function normalizeSections(sections, targetTotal) {
+  if (!sections || !sections.length) return sections;
+  const current = sections.reduce((sum, s) => sum + (Number(s.word_budget) || 0), 0);
+  if (current < targetTotal * 0.7 || current > targetTotal * 1.3) {
+    const scale = targetTotal / Math.max(current, 1);
+    sections.forEach(s => {
+      s.word_budget = Math.max(400, Math.round((Number(s.word_budget) || 1000) * scale));
+    });
+    console.info(`[命途推演] 架构师 word_budget 总和 ${current} 偏离目标 ${targetTotal}，已按 ${scale.toFixed(2)}× 归一化。`);
+  }
+  return sections;
+}
+
+// ============================================================
+// 7. UI: RUN / RENDER
+// ============================================================
+
+function validateBeforeRun() {
+  const f = readForm();
+  if (!state.config.apiKey) {
+    toast('请先在设置中填入 API Key', 'err');
+    openDrawer('settings');
+    return false;
+  }
+  if (!f.title) { toast('请填写决策标题', 'err'); $('#f-title').focus(); return false; }
+  if (!f.optionA) { toast('请填写选项 A 详述', 'err'); $('#f-option-a').focus(); return false; }
+  return true;
+}
+
+function stageBlock(id, iconClass, title, detailHtml) {
+  const isStage1 = id === 'stage1';
+  return `
+    <div class="progress-block" id="${id}-block" data-stage="${id}">
+      <div class="progress-block-header" data-toggle-block="${id}-block">
+        <div class="progress-stage" id="${id}-line">
+          <i class="ph-bold ${iconClass} stage-icon"></i>
+          <span class="stage-text">${title}</span>
+        </div>
+        <i class="ph-bold ph-caret-down progress-block-toggle"></i>
+      </div>
+      <div class="progress-block-body">
+        <div class="progress-detail" id="${id}-detail">${detailHtml || ''}</div>
+        ${isStage1 ? '<div class="sections-preview" id="sections-preview"></div>' : ''}
+      </div>
+    </div>
+  `;
+}
+
+function setStageDone(id, iconClass, title) {
+  const wrap = $('#' + id + '-line');
+  if (!wrap) return;
+  wrap.classList.add('done');
+  wrap.classList.remove('error');
+  const icon = wrap.querySelector('.stage-icon');
+  if (icon) icon.className = 'ph-bold ' + iconClass + ' stage-icon';
+  const text = wrap.querySelector('.stage-text');
+  if (text) text.innerHTML = title;
+  // Auto-collapse the block after a short pause so user sees the completion state
+  setTimeout(() => {
+    const block = document.getElementById(id + '-block');
+    if (block) block.classList.add('collapsed');
+  }, 900);
+}
+
+function setStageError(id, iconClass, title) {
+  const wrap = $('#' + id + '-line');
+  if (!wrap) return;
+  wrap.classList.add('error');
+  wrap.classList.remove('done');
+  const icon = wrap.querySelector('.stage-icon');
+  if (icon) icon.className = 'ph-bold ' + iconClass + ' stage-icon';
+  const text = wrap.querySelector('.stage-text');
+  if (text) text.innerHTML = title;
+  // Error state stays expanded so user can read the error detail
+}
+
+async function runPipeline() {
+  if (state.isGenerating) return;
+  if (!validateBeforeRun()) return;
+
+  const f = state.form;
+  const depth = state.config.depth;
+  const useSearch = state.config.searchEnabled && state.config.tavilyKey;
+
+  state.isGenerating = true;
+  state.report = '';
+  state.sections = null;
+  state.evidence = null;
+  state.abortController = new AbortController();
+
+  $('#btn-run').style.display = 'none';
+  $('#btn-stop').style.display = 'inline-flex';
+  $('#output-empty').style.display = 'none';
+  $('#output-content').style.display = 'block';
+  $('#output-toolbar').style.display = 'none';
+
+  // Reset drill-in state from a previous run
+  document.getElementById('report-summary')?.remove();
+  $('#report-area').style.display = '';
+
+  const progress = $('#progress-area');
+  const report = $('#report-area');
+  progress.innerHTML = '';
+  report.innerHTML = '';
+
+  // ──────────────── STAGE 1 · ARCHITECT ────────────────
+  progress.insertAdjacentHTML('beforeend', stageBlock(
+    'stage1', 'ph-circle-notch',
+    `推演架构师正在为你的<strong>「${escapeHtml(f.title)}」</strong>决策定制结构${useSearch ? '与检索查询' : ''}…`,
+    '分析决策性质 · 选择结构策略 · 设计章节列表' + (useSearch ? ' · 生成 Tavily 智能查询' : '')
+  ));
+
+  let sections;
+  let architectQueries = null;
+  try {
+    const archResult = await runArchitect(f, depth, state.abortController.signal, useSearch);
+    sections = archResult.sections;
+    state.sections = archResult;
+    architectQueries = archResult.search_queries || null;
+    if (archResult.fallback) {
+      setStageDone('stage1', 'ph-warning', '架构师输出异常 — 已回退默认 6 段结构');
+    } else {
+      const queryNote = useSearch && architectQueries?.length
+        ? ` · 生成 <strong>${architectQueries.length}</strong> 条查询`
+        : '';
+      setStageDone('stage1', 'ph-check-circle', `架构师就位 · <strong>${escapeHtml(archResult.decision_category)}</strong> · 策略 ${archResult.structure_strategy}${queryNote}`);
+    }
+    $('#stage1-detail').textContent = archResult.rationale || '';
+    renderSectionsPreview(sections);
+    if (useSearch && architectQueries?.length) renderQueriesPreview(architectQueries);
+  } catch (e) {
+    if (e.name === 'AbortError') {
+      toast('已停止', 'warn');
+      finishGen();
+      return;
+    }
+    toast('架构师失败，使用默认结构: ' + e.message.slice(0, 60), 'warn');
+    sections = getDefaultSections(depth);
+    state.sections = { fallback: true, sections, decision_category: '默认', structure_strategy: 'keep_default' };
+    setStageError('stage1', 'ph-warning', '架构师调用失败 — 已回退默认结构');
+    renderSectionsPreview(sections);
+  }
+
+  // ──────────────── STAGE 1.5 · WEB SEARCH (after architect) ────────────────
+  let evidence = null;
+  if (useSearch) {
+    // prefer architect's queries; fallback to deterministic
+    const queries = (architectQueries && architectQueries.length)
+      ? architectQueries
+      : buildSearchQueries(f);
+
+    if (!queries.length) {
+      console.warn('[search] no queries available, skip Tavily');
+    } else {
+      progress.insertAdjacentHTML('beforeend', stageBlock(
+        'stage-search', 'ph-magnifying-glass',
+        `Tavily 检索中 · ${queries.length} 条${architectQueries?.length ? '架构师生成的' : '默认'}查询`,
+        '准备查询关键词…'
+      ));
+      // Inject evidence-preview container inside stage-search body so it folds with the block
+      const stageSearchBody = document.querySelector('#stage-search-block .progress-block-body');
+      if (stageSearchBody) {
+        stageSearchBody.insertAdjacentHTML('beforeend',
+          '<div class="evidence-preview" id="evidence-preview"></div>'
+        );
+      }
+
+      try {
+        evidence = await runWebSearch(queries, state.abortController.signal, (p) => {
+          if (p.phase === 'query') {
+            $('#stage-search-detail').textContent = `查询 ${p.index + 1}/${p.total}：${p.query}`;
+          } else if (p.phase === 'done') {
+            $('#stage-search-detail').textContent = `召回 ${p.count} 条证据 · ${p.queries.length} 次查询${p.errors.length ? ` · ${p.errors.length} 次失败` : ''}`;
+          }
+        });
+        state.evidence = evidence;
+        const okCount = evidence?.results?.length || 0;
+        if (okCount > 0) {
+          setStageDone('stage-search', 'ph-check-circle', `检索就绪 · <strong>${okCount}</strong> 条证据已注入下游`);
+          renderEvidencePreview(evidence);
+        } else {
+          setStageError('stage-search', 'ph-warning', '检索未召回结果，将不注入证据继续推演');
+        }
+      } catch (e) {
+        if (e.name === 'AbortError') { toast('已停止', 'warn'); finishGen(); return; }
+        setStageError('stage-search', 'ph-warning', `Tavily 检索失败 — ${escapeHtml(e.message.slice(0, 100))}`);
+        toast('Tavily 失败，将跳过检索继续推演', 'warn');
+        evidence = null;
+      }
+    }
+  }
+
+  // ──────────────── STAGE 2 · STRATEGIST ────────────────
+  progress.insertAdjacentHTML('beforeend', stageBlock(
+    'stage2', 'ph-circle-notch',
+    `推演师正在生成报告 · 已生成 <strong id="char-count">0</strong> 字`,
+    '流式输出中…'
+  ));
+
+  try {
+    const startTime = Date.now();
+    const full = await runStrategist(f, sections, depth, state.abortController.signal, (chunk, fullText) => {
+      state.report = fullText;
+      const cc = $('#char-count');
+      if (cc) cc.textContent = fullText.length;
+      renderReportStreaming(fullText);
+      const lastH2 = (fullText.match(/##\s+([^\n]+)/g) || []).pop();
+      if (lastH2) $('#stage2-detail').textContent = '当前生成 · ' + lastH2.replace(/^##\s+/, '');
+    }, evidence);
+    state.report = full;
+    const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+    setStageDone('stage2', 'ph-check-circle', `推演完成 · <strong>${full.length}</strong> 字 · 用时 ${elapsed}s`);
+    $('#stage2-detail').textContent = '全部章节已生成';
+    finishReport();
+  } catch (e) {
+    if (e.name === 'AbortError') {
+      toast('已停止生成', 'warn');
+      setStageError('stage2', 'ph-stop-circle', '已被用户停止');
+    } else {
+      toast('推演师调用失败: ' + e.message.slice(0, 80), 'err');
+      setStageError('stage2', 'ph-warning-octagon', '调用失败 — ' + escapeHtml(e.message.slice(0, 100)));
+    }
+    finishGen();
+    return;
+  }
+  finishGen();
+}
+
+function renderQueriesPreview(queries) {
+  const wrap = $('#sections-preview');
+  if (!wrap) return;
+  const queriesHtml = `
+    <div class="section-card queries-card">
+      <div class="section-card-title">
+        <span class="section-card-num">⚲</span>
+        <span>检索查询计划 · ${queries.length} 条</span>
+      </div>
+      <div class="section-card-purpose" style="padding-left:36px;display:flex;flex-direction:column;gap:4px;margin-top:6px;">
+        ${queries.map((q, i) => `<div style="font-family:var(--font-mono);font-size:12px;color:var(--ink-3);"><span style="color:var(--muted);">${String(i+1).padStart(2,'0')}</span>  ${escapeHtml(q)}</div>`).join('')}
+      </div>
+    </div>
+  `;
+  wrap.insertAdjacentHTML('beforeend', queriesHtml);
+}
+
+function renderEvidencePreview(evidence) {
+  const wrap = $('#evidence-preview');
+  if (!wrap || !evidence?.results?.length) return;
+
+  // 按查询分组，便于看清各路径召回是否均衡
+  const byQuery = new Map();
+  for (const r of evidence.results) {
+    const q = r.query || '(unknown)';
+    if (!byQuery.has(q)) byQuery.set(q, []);
+    byQuery.get(q).push(r);
+  }
+
+  let html = `<div class="evidence-list">
+    <div class="evidence-list-head">检索证据 · ${evidence.results.length} 条 · 按查询分组</div>`;
+
+  let globalIdx = 0;
+  for (const [query, items] of byQuery) {
+    html += `<div class="evidence-group-head">${escapeHtml(query)} <span class="evidence-group-count">${items.length} 条</span></div>`;
+    for (const r of items) {
+      globalIdx++;
+      let domain = '';
+      try { domain = new URL(r.url).hostname; } catch (e) { domain = '—'; }
+      html += `
+        <a class="evidence-item" href="${escapeHtml(r.url)}" target="_blank" rel="noopener">
+          <span class="evidence-num">${String(globalIdx).padStart(2, '0')}</span>
+          <div class="evidence-body">
+            <div class="evidence-title">${escapeHtml(r.title)}</div>
+            <div class="evidence-snippet">${escapeHtml(r.content.slice(0, 160))}…</div>
+            <div class="evidence-meta">${escapeHtml(domain)} · score ${r.score.toFixed(2)}</div>
+          </div>
+        </a>`;
+    }
+  }
+  html += '</div>';
+  wrap.innerHTML = html;
+}
+
+function finishReport() {
+  // Final render to the inline streaming area (so streaming cursor is replaced cleanly)
+  renderReport(state.report);
+  // Pre-render into the overlay so it opens instantly
+  $('#report-overlay-content').innerHTML = renderMarkdown(state.report);
+  $('#report-overlay-title').textContent = '推演卷宗 · ' + (state.form.title || '未命名');
+  // Hide inline streaming area; show drill-in summary card
+  $('#report-area').style.display = 'none';
+  showReportSummary();
+  // Reveal toolbar
+  $('#output-toolbar').style.display = 'flex';
+  updateStats();
+  saveCurrentToHistory(true);
+}
+
+function showReportSummary() {
+  // Remove old summary if exists (e.g., re-run)
+  document.getElementById('report-summary')?.remove();
+
+  const chars = state.report.length;
+  const h2 = (state.report.match(/^##\s/gm) || []).length;
+  const card = document.createElement('a');
+  card.id = 'report-summary';
+  card.className = 'report-summary-card';
+  card.href = 'javascript:void(0)';
+  card.innerHTML = `
+    <div class="report-summary-icon"><i class="ph-fill ph-file-text"></i></div>
+    <div class="report-summary-meta">
+      <div class="report-summary-title">推演卷宗 · ${escapeHtml(state.form.title || '未命名')}</div>
+      <div class="report-summary-stats">${chars} 字 · ${h2} 章 · ${state.config.depth} 档</div>
+      <div class="report-summary-hint">点击展开完整报告</div>
+    </div>
+    <div class="report-summary-arrow"><i class="ph-bold ph-arrow-right"></i></div>
+  `;
+  card.addEventListener('click', e => { e.preventDefault(); openReportOverlay(); });
+  $('#output-content').appendChild(card);
+}
+
+function openReportOverlay() {
+  if (!state.report) { toast('暂无报告', 'warn'); return; }
+  // Re-render in case state.report changed
+  $('#report-overlay-content').innerHTML = renderMarkdown(state.report);
+  $('#report-overlay-title').textContent = '推演卷宗 · ' + (state.form.title || '未命名');
+  $('#report-overlay').classList.add('open');
+  $('#report-overlay-backdrop').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  // Scroll overlay to top
+  $('#report-overlay').scrollTop = 0;
+}
+
+function closeReportOverlay() {
+  $('#report-overlay').classList.remove('open');
+  $('#report-overlay-backdrop').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function finishGen() {
+  state.isGenerating = false;
+  state.abortController = null;
+  $('#btn-run').style.display = 'inline-flex';
+  $('#btn-stop').style.display = 'none';
+}
+
+function stopGen() {
+  if (state.abortController) state.abortController.abort();
+}
+
+function renderSectionsPreview(sections) {
+  const wrap = $('#sections-preview');
+  if (!wrap) return;
+  const totalBudget = sections.reduce((sum, s) => sum + (s.word_budget || 0), 0);
+  const header = `<div class="section-card-meta" style="padding-left:0;margin-bottom:8px;"><strong>${sections.length}</strong> 章 · 目标总字数 <strong>${totalBudget}</strong></div>`;
+  wrap.innerHTML = header + sections.map((s, i) => `
+    <div class="section-card" style="animation-delay: ${i * 60}ms">
+      <div class="section-card-title">
+        <span class="section-card-num">${String(i + 1).padStart(2, '0')}</span>
+        <span>${escapeHtml(s.title)}</span>
+      </div>
+      <div class="section-card-purpose">${escapeHtml(s.purpose)}</div>
+      <div class="section-card-meta"><strong>${s.word_budget}</strong> 字 · 必含 ${s.required_elements.slice(0, 3).map(escapeHtml).join(' · ')}${s.required_elements.length > 3 ? ' …' : ''}</div>
+    </div>
+  `).join('');
+}
+
+let renderRaf = null;
+function renderReportStreaming(text) {
+  if (renderRaf) return;
+  renderRaf = requestAnimationFrame(() => {
+    renderRaf = null;
+    renderReport(text + '<span class="streaming-cursor"></span>');
+  });
+}
+function renderReport(text) {
+  if (text.includes('streaming-cursor')) {
+    const md = text.replace(/<span class="streaming-cursor"><\/span>$/, '');
+    $('#report-area').innerHTML = renderMarkdown(md) + '<span class="streaming-cursor"></span>';
+  } else {
+    $('#report-area').innerHTML = renderMarkdown(text || '');
+  }
+}
+
+// ============================================================
+// Markdown rendering with marked + inline fallback
+// ============================================================
+function renderMarkdown(text) {
+  if (typeof marked !== 'undefined' && marked && typeof marked.parse === 'function') {
+    try { return marked.parse(text || ''); }
+    catch (e) { console.warn('marked.parse threw:', e); return simpleMarkdown(text); }
+  }
+  if (!window.__markedWarned) {
+    console.warn('[命途推演] marked.js 未加载，使用内置极简 Markdown 渲染器。请检查网络。');
+    window.__markedWarned = true;
+  }
+  return simpleMarkdown(text);
+}
+
+// Tiny in-file markdown fallback (covers what the strategist actually emits)
+function simpleMarkdown(src) {
+  if (!src) return '';
+  let s = String(src).replace(/\r\n/g, '\n');
+
+  // 1. Escape HTML
+  s = s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  // 2. Fenced code blocks (stash first; we'll restore at the very end)
+  const codeBlocks = [];
+  s = s.replace(/```([\w\-]*)\n?([\s\S]*?)```/g, (m, lang, code) => {
+    const i = codeBlocks.push(`<pre><code>${code.replace(/\n+$/, '')}</code></pre>`) - 1;
+    return `\nCODEBLOCK_PLACEHOLDER_${i}_END\n`;
+  });
+
+  // 3. Tables (line-by-line, robust to leading whitespace / no trailing pipe)
+  s = parseTables(s);
+
+  // 4. Headers
+  s = s.replace(/^[ \t]*######\s+(.+?)\s*#*\s*$/gm, '<h6>$1</h6>');
+  s = s.replace(/^[ \t]*#####\s+(.+?)\s*#*\s*$/gm, '<h5>$1</h5>');
+  s = s.replace(/^[ \t]*####\s+(.+?)\s*#*\s*$/gm, '<h4>$1</h4>');
+  s = s.replace(/^[ \t]*###\s+(.+?)\s*#*\s*$/gm, '<h3>$1</h3>');
+  s = s.replace(/^[ \t]*##\s+(.+?)\s*#*\s*$/gm, '<h2>$1</h2>');
+  s = s.replace(/^[ \t]*#\s+(.+?)\s*#*\s*$/gm, '<h1>$1</h1>');
+
+  // 5. HR
+  s = s.replace(/^[ \t]*([-*_])(?:[ \t]*\1){2,}[ \t]*$/gm, '<hr>');
+
+  // 6. Blockquote — group consecutive `> ` lines into one
+  //    Note: `>` was escaped to `&gt;` in step 1, so match that.
+  s = s.replace(/((?:^[ \t]*&gt;[ \t]?.*(?:\n|$))+)/gm, (m) => {
+    const inner = m.split('\n').filter(Boolean).map(l => l.replace(/^[ \t]*&gt;[ \t]?/, '')).join('<br>');
+    return '<blockquote>' + inner + '</blockquote>\n';
+  });
+
+  // 7. Lists — group consecutive bullet lines into one <ul>
+  s = s.replace(/((?:^[ \t]*[-*+][ \t]+.+(?:\n|$))+)/gm, (m) => {
+    const lis = m.split('\n').filter(Boolean).map(l =>
+      `<li>${l.replace(/^[ \t]*[-*+][ \t]+/, '')}</li>`
+    ).join('');
+    return '<ul>' + lis + '</ul>\n';
+  });
+  s = s.replace(/((?:^[ \t]*\d+\.[ \t]+.+(?:\n|$))+)/gm, (m) => {
+    const lis = m.split('\n').filter(Boolean).map(l =>
+      `<li>${l.replace(/^[ \t]*\d+\.[ \t]+/, '')}</li>`
+    ).join('');
+    return '<ol>' + lis + '</ol>\n';
+  });
+
+  // 8. Inline: bold > italic > inline code
+  s = s.replace(/\*\*([^\*\n][^\*\n]*?)\*\*/g, '<strong>$1</strong>');
+  s = s.replace(/(^|[^\*])\*([^\*\n]+?)\*(?!\*)/g, '$1<em>$2</em>');
+  s = s.replace(/`([^`\n]+)`/g, '<code>$1</code>');
+
+  // 9. Wrap remaining blank-line separated blocks into paragraphs.
+  //    Skip wrap for already-block-level HTML AND for code block placeholders.
+  s = s.split(/\n{2,}/).map(block => {
+    const b = block.trim();
+    if (!b) return '';
+    if (/^CODEBLOCK_PLACEHOLDER_\d+_END$/.test(b)) return b;
+    if (/^<(\/?(h[1-6]|ul|ol|li|pre|blockquote|table|thead|tbody|tr|th|td|hr|p|div))[\s>]/.test(b)) return b;
+    return '<p>' + b.replace(/\n/g, '<br>') + '</p>';
+  }).join('\n');
+
+  // 10. Restore code blocks
+  s = s.replace(/CODEBLOCK_PLACEHOLDER_(\d+)_END/g, (m, i) => codeBlocks[+i] || '');
+
+  return s;
+}
+
+function parseTables(s) {
+  const lines = s.split('\n');
+  const out = [];
+  const isTableRow = (l) => /^[ \t]*\|.*\|[ \t]*$/.test(l);
+  const isSeparator = (l) => /^[ \t]*\|?[ \t]*:?-{2,}:?[ \t]*(\|[ \t]*:?-{2,}:?[ \t]*)+\|?[ \t]*$/.test(l);
+  const splitCells = (line) => line.trim().replace(/^\||\|$/g, '').split('|').map(c => c.trim());
+
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+    if (isTableRow(line) && i + 1 < lines.length && isSeparator(lines[i + 1])) {
+      const head = splitCells(line);
+      const rows = [];
+      let j = i + 2;
+      while (j < lines.length && isTableRow(lines[j])) {
+        rows.push(splitCells(lines[j]));
+        j++;
+      }
+      out.push(
+        '<table><thead><tr>' +
+        head.map(h => `<th>${h}</th>`).join('') +
+        '</tr></thead><tbody>' +
+        rows.map(r => '<tr>' + r.map(c => `<td>${c}</td>`).join('') + '</tr>').join('') +
+        '</tbody></table>'
+      );
+      i = j;
+      continue;
+    }
+    out.push(line);
+    i++;
+  }
+  return out.join('\n');
+}
+
+function updateStats() {
+  if (!state.report) return;
+  const chars = state.report.length;
+  const h2 = (state.report.match(/^##\s/gm) || []).length;
+  $('#output-stats').textContent = `${chars} 字 · ${h2} 章`;
+}
+
+// ============================================================
+// 8. EXPORT
+// ============================================================
+
+function exportHTML() {
+  if (!state.report) { toast('暂无报告可导出', 'warn'); return; }
+  const html = buildExportHTML();
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const safeName = (state.form.title || '推演报告').replace(/[\\/:*?"<>|]/g, '_').slice(0, 40);
+  a.href = url;
+  a.download = `命途推演 · ${safeName} · ${new Date().toISOString().slice(0, 10)}.html`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  toast('已导出独立 HTML 卷宗', 'ok');
+}
+
+function copyMarkdown() {
+  if (!state.report) { toast('暂无报告', 'warn'); return; }
+  const meta = `# ${state.form.title}\n\n> 命途推演 · ${new Date().toLocaleString('zh-CN')}\n\n---\n\n`;
+  navigator.clipboard.writeText(meta + state.report).then(() => {
+    toast('Markdown 已复制', 'ok');
+  }).catch(e => toast('复制失败: ' + e.message, 'err'));
+}
+
+function clearOutput() {
+  if (state.isGenerating) { toast('生成中无法清空', 'warn'); return; }
+  if (!confirm('确定清空当前报告？（已保存的历史不受影响）')) return;
+  state.report = '';
+  state.sections = null;
+  state.evidence = null;
+  $('#output-content').style.display = 'none';
+  $('#output-empty').style.display = 'block';
+  $('#output-toolbar').style.display = 'none';
+  document.getElementById('report-summary')?.remove();
+  $('#report-area').style.display = '';
+  $('#report-area').innerHTML = '';
+  $('#progress-area').innerHTML = '';
+  $('#report-overlay-content').innerHTML = '';
+  closeReportOverlay();
+}
+
+// ============================================================
+// 9. HISTORY
+// ============================================================
+
+function loadHistory() {
+  try {
+    state.history = JSON.parse(localStorage.getItem(LS_HISTORY) || '[]');
+  } catch (e) { state.history = []; }
+}
+
+function saveCurrentToHistory(silent) {
+  if (!state.report) { if (!silent) toast('暂无报告', 'warn'); return; }
+  const item = {
+    id: 'h_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+    title: state.form.title || '未命名推演',
+    timestamp: Date.now(),
+    depth: state.config.depth,
+    chars: state.report.length,
+    form: state.form,
+    sections: state.sections,
+    evidence: state.evidence,
+    report: state.report
+  };
+  loadHistory();
+  const recent = state.history.find(h => h.title === item.title && Date.now() - h.timestamp < 5 * 60 * 1000);
+  if (recent) state.history = state.history.filter(h => h.id !== recent.id);
+  state.history.unshift(item);
+  if (state.history.length > 20) state.history = state.history.slice(0, 20);
+  localStorage.setItem(LS_HISTORY, JSON.stringify(state.history));
+  if (!silent) toast('已加入历史', 'ok');
+}
+
+function renderHistory() {
+  loadHistory();
+  const wrap = $('#history-body');
+  if (!state.history.length) {
+    wrap.innerHTML = '<div class="history-empty"><div class="history-empty-title">尚无历史推演</div><div class="history-empty-sub">完成一次推演后会自动保存（最多 20 条）</div></div>';
+    return;
+  }
+  wrap.innerHTML = state.history.map(h => `
+    <div class="history-item" data-id="${h.id}">
+      <div class="history-item-title">${escapeHtml(h.title)}</div>
+      <div class="history-item-meta">
+        <span>${new Date(h.timestamp).toLocaleString('zh-CN', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</span>
+        <span>${h.depth}</span>
+        <span>${h.chars} 字</span>
+      </div>
+      <button class="history-item-delete" data-del="${h.id}" title="删除" type="button">
+        <i class="ph-bold ph-x"></i>
+      </button>
+    </div>
+  `).join('');
+
+  wrap.querySelectorAll('.history-item').forEach(el => {
+    el.addEventListener('click', e => {
+      if (e.target.closest('[data-del]')) return;
+      loadHistoryItem(el.dataset.id);
+    });
+  });
+  wrap.querySelectorAll('[data-del]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      deleteHistoryItem(btn.dataset.del);
+    });
+  });
+}
+
+function loadHistoryItem(id) {
+  const h = state.history.find(x => x.id === id);
+  if (!h) return;
+  state.report = h.report;
+  state.sections = h.sections;
+  state.form = h.form;
+  state.evidence = h.evidence || null;
+  $('#output-empty').style.display = 'none';
+  $('#output-content').style.display = 'block';
+
+  // Reset prior drill-in state
+  document.getElementById('report-summary')?.remove();
+
+  const progress = $('#progress-area');
+  // Historical view: all stage blocks collapsed by default
+  progress.innerHTML = `
+    <div class="progress-block collapsed" id="hist-block">
+      <div class="progress-block-header" data-toggle-block="hist-block">
+        <div class="progress-stage done">
+          <i class="ph-bold ph-archive stage-icon"></i>
+          <span class="stage-text">已加载历史卷宗 · <strong>${escapeHtml(h.title)}</strong></span>
+        </div>
+        <i class="ph-bold ph-caret-down progress-block-toggle"></i>
+      </div>
+      <div class="progress-block-body">
+        <div class="progress-detail">${new Date(h.timestamp).toLocaleString('zh-CN')} · ${h.depth} · ${h.chars} 字${h.evidence?.results?.length ? ' · 含 ' + h.evidence.results.length + ' 条检索证据' : ''}</div>
+        <div class="sections-preview" id="sections-preview"></div>
+        ${h.evidence?.results?.length ? '<div class="evidence-preview" id="evidence-preview" style="margin-top:18px;"></div>' : ''}
+      </div>
+    </div>
+  `;
+  if (h.sections?.sections) renderSectionsPreview(h.sections.sections);
+  if (h.sections?.search_queries?.length) renderQueriesPreview(h.sections.search_queries);
+  if (h.evidence?.results?.length) renderEvidencePreview(h.evidence);
+
+  // Hide inline streaming area; load report into overlay-ready state + show summary card
+  $('#report-area').innerHTML = '';
+  $('#report-area').style.display = 'none';
+  $('#report-overlay-content').innerHTML = renderMarkdown(state.report);
+  $('#report-overlay-title').textContent = '推演卷宗 · ' + (state.form.title || '未命名');
+  showReportSummary();
+
+  $('#output-toolbar').style.display = 'flex';
+  updateStats();
+  closeDrawer('history');
+  toast('已加载历史推演', 'ok');
+}
+
+function deleteHistoryItem(id) {
+  if (!confirm('删除该条历史？')) return;
+  state.history = state.history.filter(h => h.id !== id);
+  localStorage.setItem(LS_HISTORY, JSON.stringify(state.history));
+  renderHistory();
+}
+
+function clearAllHistory() {
+  if (!confirm('确定清空全部历史推演？此操作不可恢复。')) return;
+  state.history = [];
+  localStorage.removeItem(LS_HISTORY);
+  renderHistory();
+  toast('历史已清空', 'warn');
+}
+
+// ============================================================
+// 10. UI HELPERS
+// ============================================================
+
+function toast(msg, type = 'ok') {
+  const wrap = $('#toast-container');
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.textContent = msg;
+  wrap.appendChild(t);
+  setTimeout(() => {
+    t.style.opacity = '0';
+    t.style.transform = 'translateY(14px)';
+    t.style.transition = 'all 0.3s var(--ease)';
+    setTimeout(() => t.remove(), 300);
+  }, 2400);
+}
+
+function escapeHtml(str) {
+  return String(str || '').replace(/[&<>"']/g, ch => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[ch]));
+}
+
+function openDrawer(name) {
+  $(`#${name}-drawer`).classList.add('open');
+  $(`#${name}-backdrop`).classList.add('open');
+  if (name === 'history') renderHistory();
+}
+function closeDrawer(name) {
+  $(`#${name}-drawer`).classList.remove('open');
+  $(`#${name}-backdrop`).classList.remove('open');
+}
+
+// scroll-entry animation
+function setupIntersectionFade() {
+  if (!('IntersectionObserver' in window)) {
+    $$('.fade-in').forEach(el => el.classList.add('in'));
+    return;
+  }
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  $$('.fade-in').forEach(el => obs.observe(el));
+}
+
+// ============================================================
+// 11. INIT / EVENTS
+// ============================================================
+
+function bindEvents() {
+  $$('[data-toggle]').forEach(h => h.addEventListener('click', () => {
+    h.closest('.form-group').classList.toggle('collapsed');
+  }));
+
+  // Stage progress block collapse/expand (event-delegation so dynamically inserted blocks work)
+  document.addEventListener('click', e => {
+    const header = e.target.closest('[data-toggle-block]');
+    if (!header) return;
+    const id = header.getAttribute('data-toggle-block');
+    const block = document.getElementById(id);
+    if (block) block.classList.toggle('collapsed');
+  });
+
+  document.addEventListener('click', e => {
+    const target = e.target.closest('.pill, .segment, .depth-pill');
+    if (!target) return;
+    const group = target.parentElement;
+    const isMulti = group.hasAttribute('data-multi');
+    if (isMulti) {
+      target.classList.toggle('selected');
+    } else {
+      group.querySelectorAll('.pill, .segment, .depth-pill').forEach(p => p.classList.remove('selected'));
+      target.classList.add('selected');
+    }
+    if (group.dataset.field === 'depth') {
+      $('#depth-indicator').textContent = 'depth · ' + target.dataset.val;
+    }
+    readForm();
+  });
+
+  $$('input[type=text], input[type=number], input[type=password], textarea, select').forEach(el => {
+    el.addEventListener('input', () => readForm());
+    el.addEventListener('change', () => readForm());
+  });
+
+  $('#btn-settings').addEventListener('click', () => openDrawer('settings'));
+  $('#btn-history').addEventListener('click', () => openDrawer('history'));
+  $$('[data-close-drawer]').forEach(b => b.addEventListener('click', () => {
+    closeDrawer('settings'); closeDrawer('history');
+  }));
+  $('#settings-backdrop').addEventListener('click', () => closeDrawer('settings'));
+  $('#history-backdrop').addEventListener('click', () => closeDrawer('history'));
+
+  $('#btn-test').addEventListener('click', testConnection);
+  $('#btn-save-cfg').addEventListener('click', saveConfig);
+  $('#btn-clear-key').addEventListener('click', clearKey);
+  $('#btn-clear-history').addEventListener('click', clearAllHistory);
+
+  $('#btn-run').addEventListener('click', runPipeline);
+  $('#btn-stop').addEventListener('click', stopGen);
+
+  $('#btn-view-report').addEventListener('click', openReportOverlay);
+  $('#btn-export-html').addEventListener('click', exportHTML);
+  $('#btn-copy-md').addEventListener('click', copyMarkdown);
+  $('#btn-save-history').addEventListener('click', () => saveCurrentToHistory(false));
+  $('#btn-clear').addEventListener('click', clearOutput);
+
+  // Report overlay
+  $('#overlay-close').addEventListener('click', closeReportOverlay);
+  $('#report-overlay-backdrop').addEventListener('click', closeReportOverlay);
+  $('#overlay-export-html').addEventListener('click', exportHTML);
+  $('#overlay-copy-md').addEventListener('click', copyMarkdown);
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      if ($('#report-overlay').classList.contains('open')) {
+        closeReportOverlay();
+        return;
+      }
+      closeDrawer('settings'); closeDrawer('history');
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && !state.isGenerating) runPipeline();
+  });
+}
+
+function init() {
+  loadConfig();
+  loadFormDraft();
+  bindEvents();
+  setupIntersectionFade();
+}
+
+document.addEventListener('DOMContentLoaded', init);
+
+// ============================================================
+// 12. EXPORT HTML TEMPLATE (古纸卷宗视觉 — 保持原样)
+// ============================================================
+
+function buildExportHTML() {
+  const f = state.form;
+  const sec = state.sections;
+  const date = new Date();
+  const dateStr = date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+  const timeStr = date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+  const safeTitle = escapeHtml(f.title || '推演报告');
+  const reportHTML = renderMarkdown(state.report);
+
+  const metaLines = [];
+  if (f.types?.length) metaLines.push(`<span class="hero-tag">${f.types.join(' · ')}</span>`);
+  if (f.age) metaLines.push(`<span class="hero-tag">${f.age} 岁</span>`);
+  if (f.cityNow) metaLines.push(`<span class="hero-tag">${escapeHtml(f.cityNow)}</span>`);
+  if (state.config.depth) metaLines.push(`<span class="hero-tag">${state.config.depth}档</span>`);
+
+  return `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>命途推演 · ${safeTitle}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f1e8;
+  --bg-2: #ede5d3;
+  --text: #1a1a1a;
+  --text-2: #4a4032;
+  --text-3: #7a6b56;
+  --vermilion: #8b1a1a;
+  --vermilion-light: #a82828;
+  --bronze: #7a6648;
+  --bronze-light: #9b8466;
+  --warn: #a85a3a;
+  --rec: #4a6e3a;
+  --rule: #c4b89e;
+  --rule-2: #8a7d63;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 17px; }
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bronze); border-radius: 5px; }
+body {
+  font-family: 'Noto Serif SC', 'Songti SC', serif;
+  background: var(--bg);
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(139,26,26,0.02) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(122,102,72,0.03) 0%, transparent 50%),
+    repeating-linear-gradient(45deg, transparent 0, transparent 2px, rgba(139,26,26,0.008) 2px, rgba(139,26,26,0.008) 4px);
+  color: var(--text);
+  line-height: 2;
+  min-height: 100vh;
+}
+.ribbon { border-bottom: 2px double var(--rule-2); padding: 1.5rem 0 0.8rem; background: linear-gradient(180deg, var(--bg-2), transparent); }
+.ribbon-inner { max-width: 820px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; }
+.ribbon-brand { display: flex; align-items: center; gap: 1rem; }
+.seal { width: 56px; height: 56px; border: 2px solid var(--vermilion); background: var(--vermilion); color: var(--bg); display: flex; flex-direction: column; justify-content: center; align-items: center; font-weight: 900; font-size: 0.92rem; line-height: 1.05; letter-spacing: 0.15em; transform: rotate(-2deg); box-shadow: 1px 1px 0 var(--vermilion-light); position: relative; border-radius: 3px; }
+.seal::before { content: ''; position: absolute; inset: 3px; border: 1px solid rgba(245,241,232,0.4); border-radius: 2px; }
+.seal span { font-size: 0.65rem; letter-spacing: 0.1em; font-weight: 400; margin-top: 2px; }
+.ribbon-title { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.4em; color: var(--vermilion); border-bottom: 1px solid var(--rule); padding-bottom: 4px; }
+.ribbon-meta { text-align: right; font-size: 0.78rem; color: var(--bronze); line-height: 1.6; letter-spacing: 0.05em; }
+.ribbon-meta strong { color: var(--vermilion); font-weight: 600; }
+.hero { max-width: 820px; margin: 0 auto; padding: 4rem 2rem 3rem; text-align: center; position: relative; }
+.hero::before, .hero::after { content: ''; position: absolute; left: 50%; width: 80px; height: 1px; background: var(--rule-2); transform: translateX(-50%); }
+.hero::before { top: 2rem; }
+.hero::after { bottom: 1rem; }
+.hero-eyebrow { font-size: 0.7rem; letter-spacing: 0.6em; color: var(--bronze); margin-bottom: 1.5rem; font-weight: 500; }
+.hero-title { font-size: clamp(1.5rem, 3.5vw, 2.4rem); font-weight: 900; color: var(--text); line-height: 1.4; margin-bottom: 1.5rem; letter-spacing: 0.05em; }
+.hero-tags { display: flex; justify-content: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.hero-tag { font-size: 0.72rem; padding: 0.25rem 0.7rem; border: 1px solid var(--rule-2); color: var(--bronze); letter-spacing: 0.15em; border-radius: 2px; background: rgba(245,241,232,0.6); }
+.hero-decoration { margin: 2rem auto 0; width: 200px; height: 30px; position: relative; }
+.hero-decoration::before, .hero-decoration::after { content: ''; position: absolute; top: 50%; height: 1px; background: var(--rule-2); width: 80px; }
+.hero-decoration::before { left: 0; }
+.hero-decoration::after { right: 0; }
+.hero-decoration-mid { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 24px; height: 24px; border: 1px solid var(--vermilion); background: var(--bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--vermilion); font-size: 0.65rem; font-weight: 700; }
+.input-summary { max-width: 820px; margin: 0 auto 3rem; padding: 0 2rem; }
+.summary-card { border: 1px solid var(--rule); border-radius: 4px; padding: 1.5rem 1.8rem; background: rgba(245, 241, 232, 0.5); position: relative; }
+.summary-card::before { content: '原案'; position: absolute; top: -10px; left: 20px; background: var(--bg); padding: 0 0.6rem; color: var(--vermilion); font-weight: 700; font-size: 0.78rem; letter-spacing: 0.3em; }
+.summary-row { display: grid; grid-template-columns: 6rem 1fr; gap: 1rem; padding: 0.4rem 0; border-bottom: 1px dashed var(--rule); font-size: 0.85rem; }
+.summary-row:last-child { border-bottom: none; }
+.summary-label { color: var(--bronze); font-weight: 500; letter-spacing: 0.1em; }
+.summary-value { color: var(--text-2); }
+.report-body { max-width: 820px; margin: 0 auto; padding: 0 2rem 6rem; }
+.report-body h2 { font-size: 1.5rem; font-weight: 700; color: var(--vermilion); margin: 3.5rem 0 1.5rem; padding-bottom: 0.6rem; border-bottom: 2px double var(--rule-2); letter-spacing: 0.08em; position: relative; }
+.report-body h2::before { content: '◈'; color: var(--vermilion); margin-right: 0.5rem; font-size: 0.9em; }
+.report-body h2 + p::first-letter, .report-body h2 + h3 + p::first-letter { font-size: 2.4em; float: left; font-weight: 700; color: var(--vermilion); margin: 0.1em 0.15em 0 0; line-height: 0.9; font-family: 'Noto Serif SC', serif; }
+.report-body h3 { font-size: 1.15rem; font-weight: 600; color: var(--text); margin: 2rem 0 0.8rem; padding-left: 0.8rem; border-left: 4px solid var(--vermilion); letter-spacing: 0.05em; }
+.report-body h4 { font-size: 1rem; font-weight: 600; color: var(--bronze); margin: 1.3rem 0 0.6rem; }
+.report-body p { margin-bottom: 1rem; text-align: justify; color: var(--text); }
+.report-body strong { color: var(--vermilion); font-weight: 700; }
+.report-body em { color: var(--bronze); font-style: normal; border-bottom: 1px dotted var(--bronze); }
+.report-body ul, .report-body ol { margin: 0.6rem 0 1.2rem 1.5rem; }
+.report-body li { margin-bottom: 0.5rem; line-height: 1.9; }
+.report-body blockquote { border-left: 3px solid var(--vermilion); background: rgba(139, 26, 26, 0.03); padding: 0.8rem 1.3rem; margin: 1.3rem 0; font-style: italic; color: var(--text-2); }
+.report-body code { font-family: 'Courier New', monospace; background: var(--bg-2); padding: 0.1em 0.4em; border-radius: 2px; color: var(--vermilion); font-size: 0.9em; }
+.report-body pre { background: var(--bg-2); border: 1px solid var(--rule); border-radius: 4px; padding: 1.2rem 1.4rem; overflow-x: auto; margin: 1.3rem 0; font-family: 'Courier New', monospace; font-size: 0.82rem; line-height: 1.7; color: var(--text-2); }
+.report-body pre code { background: transparent; padding: 0; color: inherit; }
+.report-body table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.86rem; border-top: 2px solid var(--rule-2); border-bottom: 2px solid var(--rule-2); }
+.report-body table th { font-weight: 600; color: var(--vermilion); padding: 0.7rem 0.9rem; text-align: left; border-bottom: 1px solid var(--rule-2); background: rgba(139,26,26,0.04); letter-spacing: 0.05em; font-size: 0.85rem; }
+.report-body table td { padding: 0.6rem 0.9rem; border-bottom: 1px solid var(--rule); color: var(--text); }
+.report-body table tr:last-child td { border-bottom: none; }
+.report-body table tr:hover td { background: rgba(245,241,232,0.7); }
+.report-body hr { border: none; border-top: 1px dashed var(--rule-2); margin: 2.5rem auto; position: relative; width: 100%; }
+.report-body hr::after { content: '◇'; position: absolute; top: -0.8rem; left: 50%; transform: translateX(-50%); background: var(--bg); padding: 0 0.6rem; color: var(--bronze); }
+.colophon { max-width: 820px; margin: 4rem auto 0; padding: 2.5rem 2rem 3rem; border-top: 2px double var(--rule-2); text-align: center; }
+.colophon-mark { font-weight: 700; letter-spacing: 0.6em; color: var(--vermilion); font-size: 1.1rem; margin-bottom: 1rem; }
+.colophon-line { width: 60px; height: 1px; background: var(--rule-2); margin: 1rem auto; }
+.colophon-info { font-size: 0.78rem; color: var(--bronze); line-height: 2; letter-spacing: 0.08em; }
+.colophon-info strong { color: var(--vermilion); font-weight: 600; }
+.colophon-disclaimer { font-size: 0.7rem; color: var(--text-3); margin-top: 1.5rem; font-style: italic; letter-spacing: 0.05em; }
+@media (max-width: 768px) { html { font-size: 15px; } .hero { padding: 3rem 1.5rem 2rem; } .report-body { padding: 0 1.2rem 4rem; } .input-summary { padding: 0 1.2rem; } .ribbon-inner { padding: 0 1.2rem; } .summary-row { grid-template-columns: 5rem 1fr; } }
+@media print { body { background: white; } .ribbon, .colophon { page-break-inside: avoid; } .report-body h2 { page-break-after: avoid; } .report-body table, .report-body pre { page-break-inside: avoid; } }
+</style>
+</head>
+<body>
+<header class="ribbon">
+  <div class="ribbon-inner">
+    <div class="ribbon-brand">
+      <div class="seal">命途<span>推演</span></div>
+      <div>
+        <div class="ribbon-title">推演卷宗</div>
+        <div style="font-size:.7rem;color:var(--bronze);letter-spacing:.2em;margin-top:.2rem;">STRATEGIC FORESIGHT</div>
+      </div>
+    </div>
+    <div class="ribbon-meta">
+      <strong>${dateStr}</strong><br>
+      ${timeStr} · 卷宗编号 ${date.getTime().toString(36).toUpperCase()}
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-eyebrow">PERSONAL DECISION DOSSIER</div>
+  <h1 class="hero-title">${safeTitle}</h1>
+  <div class="hero-tags">${metaLines.join('')}</div>
+  <div class="hero-decoration"><div class="hero-decoration-mid">推</div></div>
+</section>
+
+<section class="input-summary">
+  <div class="summary-card">
+    ${f.optionA ? `<div class="summary-row"><div class="summary-label">选项 甲</div><div class="summary-value">${escapeHtml(f.optionA)}</div></div>` : ''}
+    ${f.optionB ? `<div class="summary-row"><div class="summary-label">选项 乙</div><div class="summary-value">${escapeHtml(f.optionB)}</div></div>` : ''}
+    ${f.deadline ? `<div class="summary-row"><div class="summary-label">时间窗口</div><div class="summary-value">${escapeHtml(f.deadline)}</div></div>` : ''}
+    ${f.constraints ? `<div class="summary-row"><div class="summary-label">硬约束</div><div class="summary-value">${escapeHtml(f.constraints)}</div></div>` : ''}
+    ${f.priorities?.length ? `<div class="summary-row"><div class="summary-label">推演侧重</div><div class="summary-value">${f.priorities.join(' · ')}</div></div>` : ''}
+    ${sec?.decision_category ? `<div class="summary-row"><div class="summary-label">决策类型</div><div class="summary-value">${escapeHtml(sec.decision_category)}</div></div>` : ''}
+  </div>
+</section>
+
+<article class="report-body">
+${reportHTML}
+</article>
+
+<footer class="colophon">
+  <div class="colophon-mark">天 機 有 數</div>
+  <div class="colophon-line"></div>
+  <div class="colophon-mark" style="font-size:1.1rem;">決 策 在 人</div>
+  <div class="colophon-info" style="margin-top:1.5rem;">
+    本卷由「命途推演」生成 · <strong>${dateStr}</strong><br>
+    推演深度：${state.config.depth} · 全文 ${state.report.length} 字
+  </div>
+  <div class="colophon-disclaimer">
+    本推演基于数据模型与概率假设，不构成法律、医疗、投资建议。<br>
+    所有路径估算均为参考，决策权与责任归于阅卷人本身。
+  </div>
+</footer>
+
+</body>
+</html>`;
+}
+
+</script>
+</body>
+</html>
