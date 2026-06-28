@@ -1,4 +1,4 @@
-# 命途推演 · Prompt 工程完整版
+# 轨迹 · Trajectory · Prompt 工程完整版
 
 本文件保存两阶段 AI 流水线的完整 prompt。`index.html` 内的 `ARCHITECT_PROMPT` 与 `STRATEGIST_PROMPT` 常量应与本文件保持一致。
 

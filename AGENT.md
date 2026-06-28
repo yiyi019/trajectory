@@ -1,4 +1,4 @@
-# AGENT.md · 命途推演 项目上下文
+# AGENT.md · 轨迹 · Trajectory 项目上下文
 
 > 给 AI 编码 Agent 读的项目说明书。如果你（AI）被叫来在这个项目里写代码、修 bug、加功能，先把这份读完。
 
@@ -6,7 +6,7 @@
 
 ## 1. 一句话项目定义
 
-**命途推演** 是一个零构建、单文件、纯前端的"人生决策推演"工具。用户在表单里描述一个决策（转专业 / 跳槽 / 婚恋 / 创业……），三阶段 AI 流水线（架构师 → Tavily 检索 → 推演师）产出一份 6,000-15,000 字的战略推演报告，可一键导出为独立 HTML 卷宗。
+**轨迹 · Trajectory** 是一个零构建、单文件、纯前端的"人生决策推演"工具。用户在表单里描述一个决策（转专业 / 跳槽 / 婚恋 / 创业……），三阶段 AI 流水线（架构师 → Tavily 检索 → 推演师）产出一份 6,000-15,000 字的战略推演报告，可一键导出为独立 HTML 卷宗。
 
 整个应用是**一个 `index.html`**，不需要 build、不需要后端、所有数据存浏览器 localStorage。
 
@@ -15,7 +15,7 @@
 ## 2. 当前文件清单
 
 ```
-命途推演/
+轨迹/
 ├── index.html      ~3500 行 · 148 KB · 主应用（HTML + 内联 CSS + 内联 JS）
 ├── README.md       面向用户的使用说明
 ├── prompts.md      两阶段 prompt 完整版（人类可读，便于审阅与迭代）
@@ -376,7 +376,7 @@ node --check /tmp/check.js
 ### 12.2 本地启动
 
 ```bash
-cd /path/to/命途推演
+cd /path/to/轨迹
 python3 -m http.server 8000
 # 浏览器开 http://localhost:8000
 ```
@@ -397,7 +397,7 @@ python3 -m http.server 8000
 
 ### 12.4 marked 兜底验证
 
-DevTools 控制台执行 `window.marked = undefined; renderReport(state.report);`，看是否走 simpleMarkdown 路径正常渲染（应看到 `[命途推演] marked.js 未加载...` warning）。
+DevTools 控制台执行 `window.marked = undefined; renderReport(state.report);`，看是否走 simpleMarkdown 路径正常渲染（应看到 `[轨迹] marked.js 未加载...` warning）。
 
 ---
 
